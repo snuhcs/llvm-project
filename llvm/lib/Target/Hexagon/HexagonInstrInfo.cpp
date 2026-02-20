@@ -4620,6 +4620,104 @@ uint64_t HexagonInstrInfo::getType(const MachineInstr &MI) const {
   return (F >> HexagonII::TypePos) & HexagonII::TypeMask;
 }
 
+bool HexagonInstrInfo::isHMXActivationMxmem(const MachineInstr &MI) const {
+  if (getType(MI) != HexagonII::TypeCVI_MXMEM)
+    return false;
+  switch (MI.getOpcode()) {
+  default: return false;
+  case Hexagon::M8_mxmem_sm_act_ub:
+  case Hexagon::M8_mxmem_dm_act_ub:
+  case Hexagon::M8_mxmemd_blk_sm_act_ub:
+  case Hexagon::M8_mxmemd_blk_dm_act_ub:
+  case Hexagon::M8_mxmem_blk_sm_act_ub:
+  case Hexagon::M8_mxmem_blk_dm_act_ub:
+  case Hexagon::M8_mxmemu_blk_sm_act_ub:
+  case Hexagon::M8_mxmemu_blk_dm_act_ub:
+  case Hexagon::M8_mxmems_blk_sm_act_ub:
+  case Hexagon::M8_mxmems_blk_dm_act_ub:
+  case Hexagon::M8_mxmem_sm_act_hf:
+  case Hexagon::M8_mxmem_blk_sm_act_hf:
+  case Hexagon::M8_mxmemu_blk_sm_act_hf:
+  case Hexagon::M8_mxmems_blk_sm_act_hf:
+  case Hexagon::M8_mxmemd_blk_sm_act_hf:
+  case Hexagon::M8_mxmem_sm_act_f8:
+  case Hexagon::M8_mxmem_blk_sm_act_f8:
+  case Hexagon::M8_mxmemu_blk_sm_act_f8:
+  case Hexagon::M8_mxmems_blk_sm_act_f8:
+  case Hexagon::M8_mxmemd_blk_sm_act_f8:
+    return true;
+  }
+}
+
+bool HexagonInstrInfo::isHMXWeightMxmem(const MachineInstr &MI) const {
+  if (getType(MI) != HexagonII::TypeCVI_MXMEM)
+    return false;
+  switch (MI.getOpcode()) {
+  default: return false;
+  case Hexagon::M8_mxmem_wei_b:
+  case Hexagon::M8_mxmem_wei_n:
+  case Hexagon::M8_mxmem_wei_c:
+  case Hexagon::M8_mxmems_wei_b:
+  case Hexagon::M8_mxmemdr_wei_b:
+  case Hexagon::M8_mxmemdp_wei_b:
+  case Hexagon::M8_mxmema_wei_b:
+  case Hexagon::M8_mxmemdi_wei_b:
+  case Hexagon::M8_mxmems_wei_n:
+  case Hexagon::M8_mxmemdr_wei_n:
+  case Hexagon::M8_mxmemdp_wei_n:
+  case Hexagon::M8_mxmem_wei_hf:
+  case Hexagon::M8_mxmems_wei_hf:
+  case Hexagon::M8_mxmemdr_wei_hf:
+  case Hexagon::M8_mxmemdp_wei_hf:
+  case Hexagon::M8_mxmema_wei_hf:
+  case Hexagon::M8_mxmemdi_wei_hf:
+  case Hexagon::M8_mxmema_wei_n:
+  case Hexagon::M8_mxmemdi_wei_n:
+  case Hexagon::M8_mxmems_wei_c:
+  case Hexagon::M8_mxmemdr_wei_c:
+  case Hexagon::M8_mxmemdp_wei_c:
+  case Hexagon::M8_mxmema_wei_c:
+  case Hexagon::M8_mxmemdi_wei_c:
+  case Hexagon::M8_mxmems_wei_n_2x:
+  case Hexagon::M8_mxmemdr_wei_n_2x:
+  case Hexagon::M8_mxmemdp_wei_n_2x:
+  case Hexagon::M8_mxmemdi_wei_n_2x:
+  case Hexagon::M8_mxmema_wei_n_2x:
+  case Hexagon::M8_mxmem_wei_n_2x:
+  case Hexagon::M8_mxmem_wei_f8:
+  case Hexagon::M8_mxmems_wei_f8:
+  case Hexagon::M8_mxmemdr_wei_f8:
+  case Hexagon::M8_mxmemdp_wei_f8:
+  case Hexagon::M8_mxmema_wei_f8:
+  case Hexagon::M8_mxmemdi_wei_f8:
+  case Hexagon::M8_mxmems_wei_sc:
+  case Hexagon::M8_mxmemdr_wei_sc:
+  case Hexagon::M8_mxmemdp_wei_sc:
+  case Hexagon::M8_mxmema_wei_sc:
+  case Hexagon::M8_mxmemdi_wei_sc:
+  case Hexagon::M8_mxmems_wei_b1:
+  case Hexagon::M8_mxmemdr_wei_b1:
+  case Hexagon::M8_mxmemdp_wei_b1:
+  case Hexagon::M8_mxmema_wei_b1:
+  case Hexagon::M8_mxmemdi_wei_b1:
+  case Hexagon::M8_mxmems_wei_sb1:
+  case Hexagon::M8_mxmemdr_wei_sb1:
+  case Hexagon::M8_mxmemdp_wei_sb1:
+  case Hexagon::M8_mxmema_wei_sb1:
+  case Hexagon::M8_mxmemdi_wei_sb1:
+  case Hexagon::M8_mxmems_wei_sm:
+  case Hexagon::M8_mxmemdr_wei_sm:
+  case Hexagon::M8_mxmemdp_wei_sm:
+  case Hexagon::M8_mxmema_wei_sm:
+  case Hexagon::M8_mxmemdi_wei_sm:
+  case Hexagon::M8_mxmem_wei_b1:
+  case Hexagon::M8_mxmem_wei_sb1:
+  case Hexagon::M8_mxmem_wei_sc:
+  case Hexagon::M8_mxmem_wei_sm:
+    return true;
+  }
+}
+
 InstrStage::FuncUnits HexagonInstrInfo::getUnits(const MachineInstr &MI) const {
   const InstrItineraryData &II = *Subtarget.getInstrItineraryData();
   const InstrStage &IS = *II.beginStage(MI.getDesc().getSchedClass());

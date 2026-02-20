@@ -228,6 +228,7 @@ copy("Headers") {
     "htmintrin.h",
     "htmxlintrin.h",
     "hvx_hexagon_protos.h",
+    "hmx_hexagon_protos.h",
     "ia32intrin.h",
     "immintrin.h",
     "intrin.h",

@@ -100,6 +100,11 @@ void HexagonTargetInfo::getTargetDefines(const LangOptions &Opts,
       Builder.defineMacro("__HVXDBL__");
   }
 
+  if (hasFeature("hmx")) {
+    Builder.defineMacro("__HMX__");
+    Builder.defineMacro("__HMX_ARCH__", HVXVersion);
+  }
+
   if (hasFeature("audio")) {
     Builder.defineMacro("__HEXAGON_AUDIO__");
   }
@@ -127,27 +132,49 @@ bool HexagonTargetInfo::initFeatureMap(
 
   Features["long-calls"] = false;
 
-  return TargetInfo::initFeatureMap(Features, Diags, CPU, FeaturesVec);
+  if (!TargetInfo::initFeatureMap(Features, Diags, CPU, FeaturesVec))
+    return false;
+
+  // HMX builtins require hmxv68|hmxv69|hmxv73|hmxv79 in the feature map.
+  // When +hmx is enabled, set the versioned hmxvXX so the builtin check
+  // passes without passing +hmxvXX to the backend (which would warn).
+  if (Features.lookup("hmx")) {
+    if (auto Rev = getHexagonCPURev(CPU)) {
+      Features["hmxv" + std::to_string(*Rev)] = true;
+    }
+  }
+  return true;
 }
 
 bool HexagonTargetInfo::handleTargetFeatures(std::vector<std::string> &Features,
                                              DiagnosticsEngine &Diags) {
   for (auto &F : Features) {
-    if (F == "+hvx-length64b")
+    if (F == "+hvx-length64b") {
       HasHVX = HasHVX64B = true;
-    else if (F == "+hvx-length128b")
+    } else if (F == "+hvx-length128b") {
       HasHVX = HasHVX128B = true;
-    else if (F.find("+hvxv") != std::string::npos) {
+    } else if (F.find("+hvxv") != std::string::npos) {
       HasHVX = true;
       HVXVersion = F.substr(std::string("+hvxv").length());
-    } else if (F == "-hvx")
+    } else if (F == "+hmx") {
+      HasHMX = true;
+      // __HMX_ARCH__ is used in hmx_hexagon_protos.h; derive from CPU if unset.
+      if (HVXVersion.empty()) {
+        StringRef C(CPU);
+        C.consume_front("hexagon");
+        C.consume_back("t");
+        C.consume_front("v");
+        HVXVersion = C.str();
+      }
+    } else if (F == "-hvx") {
       HasHVX = HasHVX64B = HasHVX128B = false;
-    else if (F == "+long-calls")
+    } else if (F == "+long-calls") {
       UseLongCalls = true;
-    else if (F == "-long-calls")
+    } else if (F == "-long-calls") {
       UseLongCalls = false;
-    else if (F == "+audio")
+    } else if (F == "+audio") {
       HasAudio = true;
+    }
   }
   if (CPU.compare("hexagonv68") >= 0) {
     HasLegalHalfType = true;
@@ -219,11 +246,28 @@ bool HexagonTargetInfo::hasFeature(StringRef Feature) const {
   if (Feature == VS)
     return true;
 
+  if (Feature.starts_with("hmxv")) {
+    if (!HasHMX)
+      return false;
+    // Feature is of the form "hmxvXX". Check that this CPU revision is
+    // at least XX.
+    StringRef Ver = Feature.drop_front(/*strlen("hmxv")=*/4);
+    unsigned RequiredRev = 0;
+    if (Ver.getAsInteger(10, RequiredRev))
+      return false;
+
+    if (auto ThisRev = getHexagonCPURev(CPU))
+      return *ThisRev >= RequiredRev;
+
+    return false;
+  }
+
   return llvm::StringSwitch<bool>(Feature)
       .Case("hexagon", true)
       .Case("hvx", HasHVX)
       .Case("hvx-length64b", HasHVX64B)
       .Case("hvx-length128b", HasHVX128B)
+      .Case("hmx", HasHMX)
       .Case("long-calls", UseLongCalls)
       .Case("audio", HasAudio)
       .Default(false);

@@ -23,6 +23,8 @@
 #include "HexagonSubtarget.h"
 #include "llvm/ADT/BitVector.h"
 #include "llvm/ADT/DenseSet.h"
+#include "llvm/ADT/SmallSet.h"
+#include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/StringExtras.h"
 #include "llvm/Analysis/AliasAnalysis.h"
@@ -1728,6 +1730,58 @@ HexagonPacketizerList::addToPacket(MachineInstr &MI) {
 
   bool ExtMI = HII->isExtended(MI) || HII->isConstExtended(MI);
   bool Good = true;
+
+  // HMX mxmem: hardware requires activation and weight in the same packet.
+  auto NextIt = std::next(MII);
+  if (HII->isHMXWeightMxmem(MI)) {
+    if (MII == MBB->begin())
+      report_fatal_error("HMX weight mxmem must be immediately after "
+                         "activation mxmem");
+    if (!HII->isHMXActivationMxmem(*std::prev(MII)))
+      report_fatal_error("HMX weight mxmem must be immediately after "
+                         "activation mxmem");
+  }
+  if (HII->isHMXActivationMxmem(MI) && (NextIt == MBB->end() ||
+                                       !HII->isHMXWeightMxmem(*NextIt)))
+    report_fatal_error("HMX activation mxmem must be immediately followed by "
+                       "weight mxmem in the same block");
+  if (HII->isHMXActivationMxmem(MI) && NextIt != MBB->end() &&
+      HII->isHMXWeightMxmem(*NextIt)) {
+    MachineInstr &WeightMI = *NextIt;
+    MII = NextIt;
+    ResourceTracker->reserveResources(MI);
+    if (ExtMI)
+      Good = tryAllocateResourcesForConstExt(true);
+
+    bool ExtWeightMI = HII->isExtended(WeightMI) || HII->isConstExtended(WeightMI);
+    if (Good) {
+      if (ResourceTracker->canReserveResources(WeightMI))
+        ResourceTracker->reserveResources(WeightMI);
+      else
+        Good = false;
+    }
+    if (Good && ExtWeightMI)
+      Good = tryAllocateResourcesForConstExt(true);
+
+    if (!Good) {
+      endPacket(MBB, MI);
+      assert(ResourceTracker->canReserveResources(MI));
+      ResourceTracker->reserveResources(MI);
+      if (ExtMI) {
+        assert(canReserveResourcesForConstExt());
+        tryAllocateResourcesForConstExt(true);
+      }
+      assert(ResourceTracker->canReserveResources(WeightMI));
+      ResourceTracker->reserveResources(WeightMI);
+      if (ExtWeightMI) {
+        assert(canReserveResourcesForConstExt());
+        reserveResourcesForConstExt();
+      }
+    }
+    CurrentPacketMIs.push_back(&MI);
+    CurrentPacketMIs.push_back(&WeightMI);
+    return MII;
+  }
 
   if (GlueToNewValueJump) {
     MachineInstr &NvjMI = *++MII;

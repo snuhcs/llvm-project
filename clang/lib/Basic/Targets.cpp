@@ -829,8 +829,12 @@ TargetInfo::CreateTargetInfo(DiagnosticsEngine &Diags,
 
   // Add the features to the compile options.
   Opts->Features.clear();
-  for (const auto &F : Opts->FeatureMap)
+  for (const auto &F : Opts->FeatureMap) {
+    if (Target->getTriple().getArch() == llvm::Triple::hexagon &&
+        F.getKey().starts_with("hmxv"))
+      continue;
     Opts->Features.push_back((F.getValue() ? "+" : "-") + F.getKey().str());
+  }
   // Sort here, so we handle the features in a predictable order. (This matters
   // when we're dealing with features that overlap.)
   llvm::sort(Opts->Features);

@@ -473,6 +473,10 @@ public:
   uint64_t getType(const MachineInstr &MI) const;
   InstrStage::FuncUnits getUnits(const MachineInstr &MI) const;
 
+  /// HMX mxmem: activation vs weight (same-packet pairing in packetizer).
+  bool isHMXActivationMxmem(const MachineInstr &MI) const;
+  bool isHMXWeightMxmem(const MachineInstr &MI) const;
+
   MachineBasicBlock::instr_iterator expandVGatherPseudo(MachineInstr &MI) const;
 
   /// getInstrTimingClassLatency - Compute the instruction latency of a given

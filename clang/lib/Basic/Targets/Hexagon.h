@@ -30,6 +30,7 @@ class LLVM_LIBRARY_VISIBILITY HexagonTargetInfo : public TargetInfo {
   std::string CPU;
   std::string HVXVersion;
   bool HasHVX = false;
+  bool HasHMX = false;
   bool HasHVX64B = false;
   bool HasHVX128B = false;
   bool HasAudio = false;

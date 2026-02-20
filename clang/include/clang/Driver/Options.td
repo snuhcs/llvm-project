@@ -6295,6 +6295,10 @@ def mhexagon_hvx_ieee_fp : Flag<["-"], "mhvx-ieee-fp">,
 def mno_hexagon_hvx_ieee_fp : Flag<["-"], "mno-hvx-ieee-fp">,
   Group<m_hexagon_Features_Group>,
   HelpText<"Disable Hexagon HVX IEEE floating-point">;
+def mhexagon_hmx : Flag<["-"], "mhmx">, Group<m_hexagon_Features_Group>,
+  HelpText<"Enable Hexagon Matrix eXtensions (HMX)">;
+def mno_hexagon_hmx : Flag<["-"], "mno-hmx">, Group<m_hexagon_Features_Group>,
+  HelpText<"Disable Hexagon Matrix eXtensions (HMX)">;
 def ffixed_r19: Flag<["-"], "ffixed-r19">, Group<f_Group>,
   HelpText<"Reserve register r19 (Hexagon only)">;
 } // let Flags = [TargetSpecific]

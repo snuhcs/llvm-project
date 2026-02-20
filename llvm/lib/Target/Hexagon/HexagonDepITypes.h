@@ -61,6 +61,7 @@ enum Type {
   TypeS_3op = 44,
   TypeV2LDST = 47,
   TypeV4LDST = 48,
+  TypeCVI_MXMEM = 49,
 };
 }
 }

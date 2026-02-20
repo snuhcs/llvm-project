@@ -100,6 +100,7 @@ public:
   void SelectConstantFP(SDNode *N);
   void SelectV65Gather(SDNode *N);
   void SelectV65GatherPred(SDNode *N);
+  void SelectM8MxmemLoad(SDNode *N);
   void SelectHVXDualOutput(SDNode *N);
   void SelectAddSubCarry(SDNode *N);
   void SelectVAlign(SDNode *N);

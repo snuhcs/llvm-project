@@ -3676,3 +3676,9 @@ class Enc_ff3442 : OpcodeHexagon {
   bits <5> Rt32;
   let Inst{20-16} = Rt32{4-0};
 }
+class Enc_HMX_mxmem_load : OpcodeHexagon {
+  bits <5> Rs32;
+  let Inst{20-16} = Rs32{4-0};
+  bits <5> Rt32;
+  let Inst{12-8} = Rt32{4-0};
+}

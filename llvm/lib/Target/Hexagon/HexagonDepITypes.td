@@ -56,3 +56,4 @@ def TypeS_2op : IType<43>;
 def TypeS_3op : IType<44>;
 def TypeV2LDST : IType<47>;
 def TypeV4LDST : IType<48>;
+def TypeCVI_MXMEM : IType<49>;

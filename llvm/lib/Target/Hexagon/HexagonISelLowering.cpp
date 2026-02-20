@@ -2136,6 +2136,106 @@ bool HexagonTargetLowering::getTgtMemIntrinsic(IntrinsicInfo &Info,
                  MachineMemOperand::MOVolatile;
     return true;
   }
+  case Intrinsic::hexagon_M8_mxmem_sm_act_ub:
+  case Intrinsic::hexagon_M8_mxmem_dm_act_ub:
+  case Intrinsic::hexagon_M8_mxmemd_blk_sm_act_ub:
+  case Intrinsic::hexagon_M8_mxmemd_blk_dm_act_ub:
+  case Intrinsic::hexagon_M8_mxmem_blk_sm_act_ub:
+  case Intrinsic::hexagon_M8_mxmem_blk_dm_act_ub:
+  case Intrinsic::hexagon_M8_mxmemu_blk_sm_act_ub:
+  case Intrinsic::hexagon_M8_mxmemu_blk_dm_act_ub:
+  case Intrinsic::hexagon_M8_mxmems_blk_sm_act_ub:
+  case Intrinsic::hexagon_M8_mxmems_blk_dm_act_ub:
+  case Intrinsic::hexagon_M8_mxmem_sm_act_hf:
+  case Intrinsic::hexagon_M8_mxmem_blk_sm_act_hf:
+  case Intrinsic::hexagon_M8_mxmemu_blk_sm_act_hf:
+  case Intrinsic::hexagon_M8_mxmems_blk_sm_act_hf:
+  case Intrinsic::hexagon_M8_mxmemd_blk_sm_act_hf:
+  case Intrinsic::hexagon_M8_mxmem_sm_act_f8:
+  case Intrinsic::hexagon_M8_mxmem_blk_sm_act_f8:
+  case Intrinsic::hexagon_M8_mxmemu_blk_sm_act_f8:
+  case Intrinsic::hexagon_M8_mxmems_blk_sm_act_f8:
+  case Intrinsic::hexagon_M8_mxmemd_blk_sm_act_f8: {
+    Info.opc = ISD::INTRINSIC_W_CHAIN;
+    Info.memVT = MVT::i8;  // opaque access, actual size in Info.size
+    Info.size = 2048;
+    Info.ptrVal = I.getArgOperand(0);
+    Info.offset = 0;
+    Info.align = MaybeAlign(2048);
+    Info.flags = MachineMemOperand::MOLoad |
+                 MachineMemOperand::MOVolatile;
+    return true;
+  }
+  case Intrinsic::hexagon_M8_mxmem_wei_b:
+  case Intrinsic::hexagon_M8_mxmem_wei_n:
+  case Intrinsic::hexagon_M8_mxmem_wei_c:
+  case Intrinsic::hexagon_M8_mxmems_wei_b:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_b:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_b:
+  case Intrinsic::hexagon_M8_mxmema_wei_b:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_b:
+  case Intrinsic::hexagon_M8_mxmems_wei_n:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_n:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_n:
+  case Intrinsic::hexagon_M8_mxmem_wei_hf:
+  case Intrinsic::hexagon_M8_mxmems_wei_hf:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_hf:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_hf:
+  case Intrinsic::hexagon_M8_mxmema_wei_hf:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_hf:
+  case Intrinsic::hexagon_M8_mxmema_wei_n:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_n:
+  case Intrinsic::hexagon_M8_mxmems_wei_c:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_c:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_c:
+  case Intrinsic::hexagon_M8_mxmema_wei_c:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_c:
+  case Intrinsic::hexagon_M8_mxmems_wei_n_2x:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_n_2x:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_n_2x:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_n_2x:
+  case Intrinsic::hexagon_M8_mxmema_wei_n_2x:
+  case Intrinsic::hexagon_M8_mxmem_wei_n_2x:
+  case Intrinsic::hexagon_M8_mxmem_wei_f8:
+  case Intrinsic::hexagon_M8_mxmems_wei_f8:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_f8:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_f8:
+  case Intrinsic::hexagon_M8_mxmema_wei_f8:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_f8:
+  case Intrinsic::hexagon_M8_mxmems_wei_sc:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_sc:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_sc:
+  case Intrinsic::hexagon_M8_mxmema_wei_sc:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_sc:
+  case Intrinsic::hexagon_M8_mxmems_wei_b1:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_b1:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_b1:
+  case Intrinsic::hexagon_M8_mxmema_wei_b1:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_b1:
+  case Intrinsic::hexagon_M8_mxmems_wei_sb1:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_sb1:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_sb1:
+  case Intrinsic::hexagon_M8_mxmema_wei_sb1:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_sb1:
+  case Intrinsic::hexagon_M8_mxmems_wei_sm:
+  case Intrinsic::hexagon_M8_mxmemdr_wei_sm:
+  case Intrinsic::hexagon_M8_mxmemdp_wei_sm:
+  case Intrinsic::hexagon_M8_mxmema_wei_sm:
+  case Intrinsic::hexagon_M8_mxmemdi_wei_sm:
+  case Intrinsic::hexagon_M8_mxmem_wei_b1:
+  case Intrinsic::hexagon_M8_mxmem_wei_sb1:
+  case Intrinsic::hexagon_M8_mxmem_wei_sc:
+  case Intrinsic::hexagon_M8_mxmem_wei_sm: {
+    Info.opc = ISD::INTRINSIC_W_CHAIN;
+    Info.memVT = MVT::i8;  // opaque access, actual size in Info.size
+    Info.size = 128;
+    Info.ptrVal = I.getArgOperand(0);
+    Info.offset = 0;
+    Info.align = MaybeAlign(128);
+    Info.flags = MachineMemOperand::MOLoad |
+                 MachineMemOperand::MOVolatile;
+    return true;
+  }
   default:
     break;
   }

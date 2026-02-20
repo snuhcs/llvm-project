@@ -190,6 +190,7 @@ void initializeHexagonMaskPass(PassRegistry &);
 void initializeHexagonMergeActivateWeightPass(PassRegistry &);
 void initializeHexagonNewValueJumpPass(PassRegistry &);
 void initializeHexagonOptAddrModePass(PassRegistry &);
+void initializeHexagonHMXPairingPass(PassRegistry &);
 void initializeHexagonPacketizerPass(PassRegistry &);
 void initializeHexagonRDFOptPass(PassRegistry &);
 void initializeHexagonSplitDoubleRegsPass(PassRegistry &);
@@ -226,6 +227,7 @@ FunctionPass *createHexagonMergeActivateWeight();
 FunctionPass *createHexagonNewValueJump();
 FunctionPass *createHexagonOptAddrMode();
 FunctionPass *createHexagonOptimizeSZextends();
+FunctionPass *createHexagonHMXPairing();
 FunctionPass *createHexagonPacketizer(bool Minimal);
 FunctionPass *createHexagonPeephole();
 FunctionPass *createHexagonRDFOpt();
@@ -259,6 +261,7 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeHexagonTarget() {
   initializeHexagonLoopIdiomRecognizeLegacyPassPass(PR);
   initializeHexagonNewValueJumpPass(PR);
   initializeHexagonOptAddrModePass(PR);
+  initializeHexagonHMXPairingPass(PR);
   initializeHexagonPacketizerPass(PR);
   initializeHexagonRDFOptPass(PR);
   initializeHexagonSplitDoubleRegsPass(PR);
@@ -512,6 +515,8 @@ void HexagonPassConfig::addPreEmitPass() {
       addPass(createHexagonGenMux());
   }
 
+  // Pair HMX activation/weight mxmem so they are adjacent for packetization.
+  addPass(createHexagonHMXPairing());
   // Packetization is mandatory: it handles gather/scatter at all opt levels.
   addPass(createHexagonPacketizer(NoOpt));
 

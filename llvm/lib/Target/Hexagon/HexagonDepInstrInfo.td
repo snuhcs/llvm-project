@@ -41980,3 +41980,1124 @@ let isExtentSigned = 1;
 let opExtentBits = 8;
 let opExtentAlign = 0;
 }
+
+def M8_mxmem_sm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11100000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_dm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32):deep:cm",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11100001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemd_blk_sm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11101000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemd_blk_dm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32):dilate:cm",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11101001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_blk_sm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11101100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_blk_dm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32):cm",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11101101;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemu_blk_sm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32):above",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11101110;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemu_blk_dm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32):above:cm",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11101111;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_blk_sm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11110000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_blk_dm_act_ub : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.ub = mxmem($Rs32,$Rt32):single:cm",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11110001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_sm_act_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11100010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_blk_sm_act_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11100100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemu_blk_sm_act_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32):above",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11100110;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_blk_sm_act_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11111000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemd_blk_sm_act_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11111010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_sm_act_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11111001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_blk_sm_act_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11111011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemu_blk_sm_act_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11100011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_blk_sm_act_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11100101;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemd_blk_sm_act_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"activation.hf = mxmem($Rs32,$Rt32):above",
+tc_M8_mxmem_act, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b0;
+let Inst{7-0} = 0b11100111;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_b : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.b = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11100000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_n : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11100001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_c : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.c = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11100010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_b : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.b = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11100110;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_b : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.b = mxmem($Rs32,$Rt32):drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11100111;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_b : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.b = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11101000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_b : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.b = mxmem($Rs32,$Rt32):after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11101001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_b : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.b = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11101011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_n : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11101100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_n : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11101101;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_n : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11101110;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.hf = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11101111;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.hf = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11110010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.hf = mxmem($Rs32,$Rt32):drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11110011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.hf = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11110100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.hf = mxmem($Rs32,$Rt32):after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11110101;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_hf : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.hf = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11110110;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_n : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11110111;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_n : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11111000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_c : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.c = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11111001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_c : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.c = mxmem($Rs32,$Rt32):drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11111010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_c : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.c = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11111011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_c : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.c = mxmem($Rs32,$Rt32):after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11111100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_c : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.c = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11111101;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_n_2x : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):2x:single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01000001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_n_2x : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):2x:drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01000010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_n_2x : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):2x:deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01000011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_n_2x : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):2x:dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01000100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_n_2x : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):2x:after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01000101;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_n_2x : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.n = mxmem($Rs32,$Rt32):2x",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01000110;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.f8 = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01000111;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.f8 = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01001000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.f8 = mxmem($Rs32,$Rt32):drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01001001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.f8 = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01001010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.f8 = mxmem($Rs32,$Rt32):after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01001011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.f8 = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b01001100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_sc : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sc = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11000000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_sc : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sc = mxmem($Rs32,$Rt32):drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11000001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_sc : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sc = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11000010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_sc : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sc = mxmem($Rs32,$Rt32):after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11000011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_sc : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sc = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11000100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_b1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.ubit = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11000101;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_b1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.ubit = mxmem($Rs32,$Rt32):drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11000110;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_b1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.ubit = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11000111;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_b1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.ubit = mxmem($Rs32,$Rt32):after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11001000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_b1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.ubit = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11001001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_sb1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sbit = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11001010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_sb1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sbit = mxmem($Rs32,$Rt32):drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11001011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_sb1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sbit = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11001100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_sb1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sbit = mxmem($Rs32,$Rt32):after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11001101;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_sb1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sbit = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11001110;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmems_wei_sm : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sm = mxmem($Rs32,$Rt32):single",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11001111;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdr_wei_sm : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sm = mxmem($Rs32,$Rt32):drop",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11010000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdp_wei_sm : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sm = mxmem($Rs32,$Rt32):deep",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11010001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmema_wei_sm : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sm = mxmem($Rs32,$Rt32):after",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11010010;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmemdi_wei_sm : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sm = mxmem($Rs32,$Rt32):dilate",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11010011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_b1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.ubit = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11100011;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_sb1 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sbit = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11100100;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_sc : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sc = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11110000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+
+def M8_mxmem_wei_sm : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"weight.sm = mxmem($Rs32,$Rt32)",
+tc_M8_mxmem_wei, TypeCVI_MXMEM>, Enc_HMX_mxmem_load, Requires<[UseHMX]> {
+let Inst{31-24} = 0b10010010;
+let Inst{23-21} = 0b000;
+let Inst{13} = 0b1;
+let Inst{7-0} = 0b11110001;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+}
+

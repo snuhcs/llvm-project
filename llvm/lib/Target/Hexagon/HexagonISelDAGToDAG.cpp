@@ -667,6 +667,90 @@ void HexagonDAGToDAGISel::SelectIntrinsicWChain(SDNode *N) {
     return;
   }
 
+  if (IntNo == Intrinsic::hexagon_M8_mxmem_sm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_dm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmemd_blk_sm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmemd_blk_dm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_blk_sm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_blk_dm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmemu_blk_sm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmemu_blk_dm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_blk_sm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_blk_dm_act_ub || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_sm_act_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_blk_sm_act_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmemu_blk_sm_act_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_blk_sm_act_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmemd_blk_sm_act_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_sm_act_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_blk_sm_act_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemu_blk_sm_act_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_blk_sm_act_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemd_blk_sm_act_f8 ||
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_b || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_n || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_c || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_b || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_b || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_b || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_b || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_b || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_n || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_n || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_n || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_hf || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_n || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_n || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_c || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_c || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_c || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_c || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_c || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_n_2x || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_n_2x || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_n_2x || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_n_2x || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_n_2x || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_n_2x || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_f8 || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_sc || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_sc || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_sc || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_sc || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_sc || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_b1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_b1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_b1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_b1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_b1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_sb1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_sb1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_sb1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_sb1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_sb1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmems_wei_sm || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdr_wei_sm || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdp_wei_sm || 
+      IntNo == Intrinsic::hexagon_M8_mxmema_wei_sm || 
+      IntNo == Intrinsic::hexagon_M8_mxmemdi_wei_sm || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_b1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_sb1 || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_sc || 
+      IntNo == Intrinsic::hexagon_M8_mxmem_wei_sm) {
+    SelectM8MxmemLoad(N);
+    return;
+  }
+
   SelectCode(N);
 }
 

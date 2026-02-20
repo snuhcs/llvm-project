@@ -55,6 +55,7 @@ def tc_ENDLOOP      : InstrItinClass;
 //===----------------------------------------------------------------------===//
 include "HexagonDepIICScalar.td"
 include "HexagonDepIICHVX.td"
+include "HexagonDepIICHMX.td"
 
 include "HexagonScheduleV5.td"
 include "HexagonScheduleV55.td"

@@ -90,6 +90,9 @@ def ExtensionAudio: SubtargetFeature<"audio", "UseAudioOps", "true",
 def ExtensionHVXIEEEFP: SubtargetFeature<"hvx-ieee-fp", "UseHVXIEEEFPOps",
       "true", "Hexagon HVX IEEE floating point instructions">;
 
+def ExtensionHMX : SubtargetFeature<"hmx", "UseHMXOps", "true", 
+      "Hexagon HMX extension instructions">;
+
 def FeatureCompound: SubtargetFeature<"compound", "UseCompound", "true",
       "Use compound instructions">;
 def FeaturePackets: SubtargetFeature<"packets", "UsePackets", "true",
@@ -162,6 +165,8 @@ def HasPreV65          : Predicate<"HST->hasPreV65()">,
                          AssemblerPredicate<(all_of FeaturePreV65)>;
 def UseHVXIEEEFP       : Predicate<"HST->useHVXIEEEFPOps()">,
                          AssemblerPredicate<(all_of ExtensionHVXIEEEFP)>;
+def UseHMX             : Predicate<"HST->useHMXOps()">,
+                         AssemblerPredicate<(all_of ExtensionHMX)>;
 def UseHVXQFloat       : Predicate<"HST->useHVXQFloatOps()">,
                          AssemblerPredicate<(all_of ExtensionHVXQFloat)>;
 def UseHVXFloatingPoint: Predicate<"HST->useHVXFloatingPoint()">;

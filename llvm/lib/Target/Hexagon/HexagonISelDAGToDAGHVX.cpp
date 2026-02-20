@@ -2954,6 +2954,266 @@ void HexagonDAGToDAGISel::SelectV65Gather(SDNode *N) {
   ReplaceNode(N, Result);
 }
 
+void HexagonDAGToDAGISel::SelectM8MxmemLoad(SDNode *N) {
+  const SDLoc &dl(N);
+  SDValue Chain = N->getOperand(0);
+  SDValue Base = N->getOperand(2);
+  SDValue Offset = N->getOperand(3);
+
+  unsigned IntNo = N->getConstantOperandVal(1);
+  unsigned Opcode;
+  switch(IntNo) {
+  default:
+    llvm_unreachable("Unexpected HMX activation intrinsic.");
+  case Intrinsic::hexagon_M8_mxmem_sm_act_ub:
+    Opcode = Hexagon::M8_mxmem_sm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_dm_act_ub:
+    Opcode = Hexagon::M8_mxmem_dm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmemd_blk_sm_act_ub:
+    Opcode = Hexagon::M8_mxmemd_blk_sm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmemd_blk_dm_act_ub:
+    Opcode = Hexagon::M8_mxmemd_blk_dm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_blk_sm_act_ub:
+    Opcode = Hexagon::M8_mxmem_blk_sm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_blk_dm_act_ub:
+    Opcode = Hexagon::M8_mxmem_blk_dm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmemu_blk_sm_act_ub:
+    Opcode = Hexagon::M8_mxmemu_blk_sm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmemu_blk_dm_act_ub:
+    Opcode = Hexagon::M8_mxmemu_blk_dm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_blk_sm_act_ub:
+    Opcode = Hexagon::M8_mxmems_blk_sm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_blk_dm_act_ub:
+    Opcode = Hexagon::M8_mxmems_blk_dm_act_ub;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_sm_act_hf:
+    Opcode = Hexagon::M8_mxmem_sm_act_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_blk_sm_act_hf:
+    Opcode = Hexagon::M8_mxmem_blk_sm_act_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmemu_blk_sm_act_hf:
+    Opcode = Hexagon::M8_mxmemu_blk_sm_act_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_blk_sm_act_hf:
+    Opcode = Hexagon::M8_mxmems_blk_sm_act_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmemd_blk_sm_act_hf:
+    Opcode = Hexagon::M8_mxmemd_blk_sm_act_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_sm_act_f8:
+    Opcode = Hexagon::M8_mxmem_sm_act_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_blk_sm_act_f8:
+    Opcode = Hexagon::M8_mxmem_blk_sm_act_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmemu_blk_sm_act_f8:
+    Opcode = Hexagon::M8_mxmemu_blk_sm_act_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_blk_sm_act_f8:
+    Opcode = Hexagon::M8_mxmems_blk_sm_act_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmemd_blk_sm_act_f8:
+    Opcode = Hexagon::M8_mxmemd_blk_sm_act_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_b:
+    Opcode = Hexagon::M8_mxmem_wei_b;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_n:
+    Opcode = Hexagon::M8_mxmem_wei_n;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_c:
+    Opcode = Hexagon::M8_mxmem_wei_c;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_b:
+    Opcode = Hexagon::M8_mxmems_wei_b;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_b:
+    Opcode = Hexagon::M8_mxmemdr_wei_b;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_b:
+    Opcode = Hexagon::M8_mxmemdp_wei_b;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_b:
+    Opcode = Hexagon::M8_mxmema_wei_b;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_b:
+    Opcode = Hexagon::M8_mxmemdi_wei_b;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_n:
+    Opcode = Hexagon::M8_mxmems_wei_n;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_n:
+    Opcode = Hexagon::M8_mxmemdr_wei_n;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_n:
+    Opcode = Hexagon::M8_mxmemdp_wei_n;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_hf:
+    Opcode = Hexagon::M8_mxmem_wei_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_hf:
+    Opcode = Hexagon::M8_mxmems_wei_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_hf:
+    Opcode = Hexagon::M8_mxmemdr_wei_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_hf:
+    Opcode = Hexagon::M8_mxmemdp_wei_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_hf:
+    Opcode = Hexagon::M8_mxmema_wei_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_hf:
+    Opcode = Hexagon::M8_mxmemdi_wei_hf;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_n:
+    Opcode = Hexagon::M8_mxmema_wei_n;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_n:
+    Opcode = Hexagon::M8_mxmemdi_wei_n;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_c:
+    Opcode = Hexagon::M8_mxmems_wei_c;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_c:
+    Opcode = Hexagon::M8_mxmemdr_wei_c;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_c:
+    Opcode = Hexagon::M8_mxmemdp_wei_c;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_c:
+    Opcode = Hexagon::M8_mxmema_wei_c;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_c:
+    Opcode = Hexagon::M8_mxmemdi_wei_c;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_n_2x:
+    Opcode = Hexagon::M8_mxmems_wei_n_2x;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_n_2x:
+    Opcode = Hexagon::M8_mxmemdr_wei_n_2x;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_n_2x:
+    Opcode = Hexagon::M8_mxmemdp_wei_n_2x;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_n_2x:
+    Opcode = Hexagon::M8_mxmemdi_wei_n_2x;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_n_2x:
+    Opcode = Hexagon::M8_mxmema_wei_n_2x;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_n_2x:
+    Opcode = Hexagon::M8_mxmem_wei_n_2x;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_f8:
+    Opcode = Hexagon::M8_mxmem_wei_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_f8:
+    Opcode = Hexagon::M8_mxmems_wei_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_f8:
+    Opcode = Hexagon::M8_mxmemdr_wei_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_f8:
+    Opcode = Hexagon::M8_mxmemdp_wei_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_f8:
+    Opcode = Hexagon::M8_mxmema_wei_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_f8:
+    Opcode = Hexagon::M8_mxmemdi_wei_f8;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_sc:
+    Opcode = Hexagon::M8_mxmems_wei_sc;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_sc:
+    Opcode = Hexagon::M8_mxmemdr_wei_sc;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_sc:
+    Opcode = Hexagon::M8_mxmemdp_wei_sc;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_sc:
+    Opcode = Hexagon::M8_mxmema_wei_sc;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_sc:
+    Opcode = Hexagon::M8_mxmemdi_wei_sc;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_b1:
+    Opcode = Hexagon::M8_mxmems_wei_b1;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_b1:
+    Opcode = Hexagon::M8_mxmemdr_wei_b1;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_b1:
+    Opcode = Hexagon::M8_mxmemdp_wei_b1;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_b1:
+    Opcode = Hexagon::M8_mxmema_wei_b1;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_b1:
+    Opcode = Hexagon::M8_mxmemdi_wei_b1;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_sb1:
+    Opcode = Hexagon::M8_mxmems_wei_sb1;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_sb1:
+    Opcode = Hexagon::M8_mxmemdr_wei_sb1;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_sb1:
+    Opcode = Hexagon::M8_mxmemdp_wei_sb1;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_sb1:
+    Opcode = Hexagon::M8_mxmema_wei_sb1;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_sb1:
+    Opcode = Hexagon::M8_mxmemdi_wei_sb1;
+    break;
+  case Intrinsic::hexagon_M8_mxmems_wei_sm:
+    Opcode = Hexagon::M8_mxmems_wei_sm;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdr_wei_sm:
+    Opcode = Hexagon::M8_mxmemdr_wei_sm;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdp_wei_sm:
+    Opcode = Hexagon::M8_mxmemdp_wei_sm;
+    break;
+  case Intrinsic::hexagon_M8_mxmema_wei_sm:
+    Opcode = Hexagon::M8_mxmema_wei_sm;
+    break;
+  case Intrinsic::hexagon_M8_mxmemdi_wei_sm:
+    Opcode = Hexagon::M8_mxmemdi_wei_sm;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_b1:
+    Opcode = Hexagon::M8_mxmem_wei_b1;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_sb1:
+    Opcode = Hexagon::M8_mxmem_wei_sb1;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_sc:
+    Opcode = Hexagon::M8_mxmem_wei_sc;
+    break;
+  case Intrinsic::hexagon_M8_mxmem_wei_sm:
+    Opcode = Hexagon::M8_mxmem_wei_sm;
+    break;
+  }
+
+  SDNode *Result = CurDAG->getMachineNode(Opcode, dl, CurDAG->getVTList(MVT::Other), {Base, Offset, Chain});
+  MachineMemOperand *MemOp = cast<MemIntrinsicSDNode>(N)->getMemOperand();
+  CurDAG->setNodeMemRefs(cast<MachineSDNode>(Result), {MemOp});
+
+  ReplaceNode(N, Result);
+}
+
 void HexagonDAGToDAGISel::SelectHVXDualOutput(SDNode *N) {
   unsigned IID = N->getConstantOperandVal(0);
   SDNode *Result;

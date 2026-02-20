@@ -59,6 +59,7 @@ class HexagonSubtarget : public HexagonGenSubtargetInfo {
   bool UseHVXIEEEFPOps = false;
   bool UseHVXQFloatOps = false;
   bool UseHVXFloatingPoint = false;
+  bool UseHMXOps = false;
   bool UseCabac = false;
 
   bool HasPreV65 = false;
@@ -246,6 +247,7 @@ public:
     return UseHVXQFloatOps && HexagonHVXVersion >= Hexagon::ArchEnum::V68;
   }
   bool useHVXFloatingPoint() const { return UseHVXFloatingPoint; }
+  bool useHMXOps() const { return UseHMXOps && useHVXOps(); }
   bool useHVXOps() const {
     return HexagonHVXVersion > Hexagon::ArchEnum::NoArch;
   }

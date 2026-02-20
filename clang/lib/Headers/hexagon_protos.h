@@ -8436,4 +8436,7 @@
 #ifdef __HVX__
 #include <hvx_hexagon_protos.h>
 #endif /* __HVX__ */
+#ifdef __HMX__
+#include <hmx_hexagon_protos.h>
+#endif /* __HMX__ */
 #endif

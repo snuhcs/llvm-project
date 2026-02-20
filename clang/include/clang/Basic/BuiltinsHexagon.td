@@ -56,6 +56,20 @@ def HVXV65 : HVXV<"65", HVXV66>;
 def HVXV62 : HVXV<"62", HVXV65>;
 def HVXV60 : HVXV<"60", HVXV62>;
 
+class HMXVFeatures {
+  string Features;
+}
+
+class HMXV<string version, HMXVFeatures newer> : HMXVFeatures {
+  let Features = !strconcat("hmxv", version, "|", newer.Features);
+}
+
+let Features ="hmxv79" in def HMXV79 : HMXVFeatures;
+
+def HMXV73 : HMXV<"73", HMXV79>;
+def HMXV69 : HMXV<"69", HMXV73>;
+def HMXV68 : HMXV<"68", HMXV69>;
+
 class HexagonBuiltin<string prototype> : TargetBuiltin {
   let Spellings = ["__builtin_HEXAGON_" # NAME];
   let Prototype = prototype;
@@ -2141,3 +2155,163 @@ let Features = HVXV79.Features in {
   def V6_vsub_hf_f8 : HexagonBuiltin<"_Vector<32, int>(_Vector<16, int>, _Vector<16, int>)">;
   def V6_vsub_hf_f8_128B : HexagonBuiltin<"_Vector<64, int>(_Vector<32, int>, _Vector<32, int>)">;
 }
+
+// V68 HMX Instructions.
+let Features = HMXV68.Features in {
+  // def M8_mxaccshl : HexagonBuiltin<"">;
+  // def M8_mxclracc : HexagonBuiltin<"">;
+  // def M8_mxclracc_hf : HexagonBuiltin<"">;
+  // def M8_mxcvta_sat_uh : HexagonBuiltin<"">;
+  // def M8_mxcvta_sat_uh_r : HexagonBuiltin<"">;
+  // def M8_mxcvta_uh : HexagonBuiltin<"">;
+  // def M8_mxcvta_uh_r : HexagonBuiltin<"">;
+  // def M8_mxcvtb_sat_uh : HexagonBuiltin<"">;
+  // def M8_mxcvtb_sat_uh_r : HexagonBuiltin<"">;
+  // def M8_mxcvtb_uh : HexagonBuiltin<"">;
+  // def M8_mxcvtb_uh_r : HexagonBuiltin<"">;
+  // def M8_mxcvtl_dm_sat_ub : HexagonBuiltin<"">;
+  // def M8_mxcvtl_dm_sat_ub_r : HexagonBuiltin<"">;
+  // def M8_mxcvtl_dm_ub : HexagonBuiltin<"">;
+  // def M8_mxcvtl_dm_ub_r : HexagonBuiltin<"">;
+  // def M8_mxcvtl_sat_hf : HexagonBuiltin<"">;
+  // def M8_mxcvtl_sat_hf_r : HexagonBuiltin<"">;
+  // def M8_mxcvtl_sat_pos_hf : HexagonBuiltin<"">;
+  // def M8_mxcvtl_sat_pos_hf_r : HexagonBuiltin<"">;
+  // def M8_mxcvtl_sat_ub : HexagonBuiltin<"">;
+  // def M8_mxcvtl_sat_ub_r : HexagonBuiltin<"">;
+  // def M8_mxcvtl_ub : HexagonBuiltin<"">;
+  // def M8_mxcvtl_ub_r : HexagonBuiltin<"">;
+  // def M8_mxcvtr_dm_sat_ub : HexagonBuiltin<"">;
+  // def M8_mxcvtr_dm_sat_ub_r : HexagonBuiltin<"">;
+  // def M8_mxcvtr_dm_ub : HexagonBuiltin<"">;
+  // def M8_mxcvtr_dm_ub_r : HexagonBuiltin<"">;
+  // def M8_mxcvtr_sat_hf : HexagonBuiltin<"">;
+  // def M8_mxcvtr_sat_hf_r : HexagonBuiltin<"">;
+  // def M8_mxcvtr_sat_pos_hf : HexagonBuiltin<"">;
+  // def M8_mxcvtr_sat_pos_hf_r : HexagonBuiltin<"">;
+  // def M8_mxcvtr_sat_ub : HexagonBuiltin<"">;
+  // def M8_mxcvtr_sat_ub_r : HexagonBuiltin<"">;
+  // def M8_mxcvtr_ub : HexagonBuiltin<"">;
+  // def M8_mxcvtr_ub_r : HexagonBuiltin<"">;
+  // def M8_mxmem2_bias : HexagonBuiltin<"">;
+  // def M8_mxmem2_st_bias : HexagonBuiltin<"">;
+  // def M8_mxmem_bias : HexagonBuiltin<"">;
+  def M8_mxmem_blk_dm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_blk_sm_act_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_blk_sm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_dm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_sm_act_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_sm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  // def M8_mxmem_st_bias : HexagonBuiltin<"">;
+  def M8_mxmem_wei_b : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_wei_b1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_wei_c : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_wei_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_wei_n : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_wei_sb1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_wei_sc : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_wei_sm : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_b : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_b1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_c : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_n : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_sb1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_sc : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_sm : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemd_blk_dm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemd_blk_sm_act_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemd_blk_sm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_b : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_b1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_c : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_n : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_sb1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_sc : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_sm : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_b : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_b1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_c : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_n : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_sb1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_sc : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_sm : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_b : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_b1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_c : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_n : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_sb1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_sc : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_sm : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_blk_dm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_blk_sm_act_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_blk_sm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_b : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_b1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_c : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_n : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_sb1 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_sc : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_sm : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemu_blk_dm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemu_blk_sm_act_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemu_blk_sm_act_ub : HexagonBuiltin<"void(void *, int)">;
+  // def M8_mxswap : HexagonBuiltin<"">;
+  // def M8_mxswap_hf : HexagonBuiltin<"">;
+  // def M8_mxcvta_sat_uh2x2 : HexagonBuiltin<"">;
+}
+
+// V69 HMX Instructions.
+// let Features = HMXV69.Features {
+  // def M8_mxcvta_sat_uh2x2_r: HexagonBuiltin<"">;
+  // def M8_mxcvta_uh2x2: HexagonBuiltin<"">;
+  // def M8_mxcvta_uh2x2_r: HexagonBuiltin<"">;
+  // def M8_mxcvtb_sat_uh2x2: HexagonBuiltin<"">;
+  // def M8_mxcvtb_sat_uh2x2_r: HexagonBuiltin<"">;
+  // def M8_mxcvtb_uh2x2: HexagonBuiltin<"">;
+  // def M8_mxcvtb_uh2x2_r: HexagonBuiltin<"">;
+// }
+
+// V73 HMX Instructions.
+let Features = HMXV73.Features in {
+  // def M8_cvt_rs_ub: HexagonBuiltin<"">;
+  // def M8_cvt_rs_ub_sc0: HexagonBuiltin<"">;
+  // def M8_cvt_rs_ub_sc1: HexagonBuiltin<"">;
+  // def M8_cvt_rs_uh_2x1: HexagonBuiltin<"">;
+  // def M8_cvt_rs_uh_2x2: HexagonBuiltin<"">;
+  // def M8_mxmem: HexagonBuiltin<"">;
+  // def M8_mxmem_2x2: HexagonBuiltin<"">;
+  // def M8_mxmem_cm: HexagonBuiltin<"">;
+  def M8_mxmem_wei_n_2x : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_n_2x : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_n_2x : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_n_2x : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_n_2x : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_n_2x : HexagonBuiltin<"void(void *, int)">;
+}
+
+let Features = HMXV79.Features in {
+  // def M8_mxmem_cm_deep : HexagonBuiltin<"">;
+  // def M8_mxmem_deep : HexagonBuiltin<"">;
+  def M8_mxmem_blk_sm_act_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_sm_act_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_wei_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmema_wei_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemd_blk_sm_act_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdi_wei_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdp_wei_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemdr_wei_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_blk_sm_act_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmems_wei_f8 : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmemu_blk_sm_act_f8 : HexagonBuiltin<"void(void *, int)">;
+}
+
+// let Features = HMXV81.Features {
+// def M8_cvt_rs_f8: HexagonBuiltin<"">;
+// def M8_mxmem_deep_f8: HexagonBuiltin<"">;
+// def M8_mxmem_f8: HexagonBuiltin<"">;
+// }
