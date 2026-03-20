@@ -1058,6 +1058,19 @@ class Hexagon_i32__Intrinsic<string GCCIntSuffix,
        [llvm_i32_ty], [],
        intr_properties>;
 
+class Hexagon____Intrinsic<string GCCIntSuffix,
+      list<IntrinsicProperty> intr_properties = [IntrNoMem]>
+  : Hexagon_Intrinsic<GCCIntSuffix,
+       [], [], 
+       intr_properties>;
+
+// tag : M8_cvt_rs_hf
+class Hexagon__i32_Intrinsic<string GCCIntSuffix,
+      list<IntrinsicProperty> intr_properties = [IntrNoMem]>
+  : Hexagon_Intrinsic<GCCIntSuffix,
+       [], [llvm_i32_ty],
+       intr_properties>;
+
 // V5 Scalar Instructions.
 
 def int_hexagon_A2_abs :
@@ -6833,238 +6846,156 @@ Hexagon_v32i32_v16i32v16i32_Intrinsic<"HEXAGON_V6_vsub_hf_f8">;
 def int_hexagon_V6_vsub_hf_f8_128B :
 Hexagon_v64i32_v32i32v32i32_Intrinsic<"HEXAGON_V6_vsub_hf_f8_128B">;
 
-// V79 HMX Instructions.
+// HMX Instructions.
+def int_hexagon_M8_mxaccshl : 
+Hexagon____Intrinsic<"HEXAGON_M8_mxaccshl">;
 
-def int_hexagon_M8_mxmem_sm_act_ub :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_sm_act_ub", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxclracc : 
+Hexagon____Intrinsic<"HEXAGON_M8_mxclracc">;
 
-def int_hexagon_M8_mxmem_dm_act_ub :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_dm_act_ub", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxclracc_hf : 
+Hexagon____Intrinsic<"HEXAGON_M8_mxclracc_hf">;
 
-def int_hexagon_M8_mxmemd_blk_sm_act_ub :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemd_blk_sm_act_ub", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxcvta_sat_uh : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvta_sat_uh", [IntrWriteMem]>;
 
-def int_hexagon_M8_mxmemd_blk_dm_act_ub :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemd_blk_dm_act_ub", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxcvta_sat_uh_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvta_sat_uh_r", [IntrWriteMem]>;
 
-def int_hexagon_M8_mxmem_blk_sm_act_ub :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_blk_sm_act_ub", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxcvta_uh : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvta_uh", [IntrWriteMem]>;
 
-def int_hexagon_M8_mxmem_blk_dm_act_ub :
+def int_hexagon_M8_mxcvta_uh_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvta_uh_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtb_sat_uh : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtb_sat_uh", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtb_sat_uh_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtb_sat_uh_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtb_uh : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtb_uh", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtb_uh_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtb_uh_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_dm_sat_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_dm_sat_ub", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_dm_sat_ub_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_dm_sat_ub_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_dm_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_dm_ub", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_dm_ub_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_dm_ub_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_sat_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_sat_hf", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_sat_hf_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_sat_hf_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_sat_pos_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_sat_pos_hf", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_sat_pos_hf_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_sat_pos_hf_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_sat_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_sat_ub", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_sat_ub_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_sat_ub_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_ub", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtl_ub_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtl_ub_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_dm_sat_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_dm_sat_ub", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_dm_sat_ub_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_dm_sat_ub_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_dm_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_dm_ub", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_dm_ub_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_dm_ub_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_sat_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_sat_hf", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_sat_hf_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_sat_hf_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_sat_pos_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_sat_pos_hf", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_sat_pos_hf_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_sat_pos_hf_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_sat_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_sat_ub", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_sat_ub_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_sat_ub_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_ub", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtr_ub_r : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_ub_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxmem2_bias : 
+Hexagon__ptr_Intrinsic<"HEXAGON_M8_mxmem2_bias", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmem2_st_bias : 
+Hexagon__ptr_Intrinsic<"HEXAGON_M8_mxmem2_st_bias", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxmem_bias : 
+Hexagon__ptr_Intrinsic<"HEXAGON_M8_mxmem_bias", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmem_blk_dm_act_ub : 
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_blk_dm_act_ub", [IntrArgMemOnly]>;
 
-def int_hexagon_M8_mxmemu_blk_sm_act_ub :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_sm_act_ub", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemu_blk_dm_act_ub :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_dm_act_ub", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_blk_sm_act_ub :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_blk_sm_act_ub", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_blk_dm_act_ub :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_blk_dm_act_ub", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmem_sm_act_hf :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_sm_act_hf", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmem_blk_sm_act_hf :
+def int_hexagon_M8_mxmem_blk_sm_act_hf : 
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_blk_sm_act_hf", [IntrArgMemOnly]>;
 
-def int_hexagon_M8_mxmemu_blk_sm_act_hf :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_sm_act_hf", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxmem_blk_sm_act_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_blk_sm_act_ub", [IntrArgMemOnly]>;
 
-def int_hexagon_M8_mxmems_blk_sm_act_hf :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_blk_sm_act_hf", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxmem_dm_act_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_dm_act_ub", [IntrArgMemOnly]>;
 
-def int_hexagon_M8_mxmemd_blk_sm_act_hf :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemd_blk_sm_act_hf", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxmem_sm_act_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_sm_act_hf", [IntrArgMemOnly]>;
 
-def int_hexagon_M8_mxmem_sm_act_f8 :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_sm_act_f8", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxmem_sm_act_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_sm_act_ub", [IntrArgMemOnly]>;
 
-def int_hexagon_M8_mxmem_blk_sm_act_f8 :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_blk_sm_act_f8", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemu_blk_sm_act_f8 :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_sm_act_f8", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_blk_sm_act_f8 :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_blk_sm_act_f8", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemd_blk_sm_act_f8 :
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemd_blk_sm_act_f8", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxmem_st_bias : 
+Hexagon__ptr_Intrinsic<"HEXAGON_M8_mxmem_st_bias", [IntrWriteMem]>;
 
 def int_hexagon_M8_mxmem_wei_b : 
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_b", [IntrArgMemOnly]>;
 
-def int_hexagon_M8_mxmem_wei_n : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_n", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxmem_wei_b1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_b1", [IntrArgMemOnly]>;
 
 def int_hexagon_M8_mxmem_wei_c : 
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_c", [IntrArgMemOnly]>;
 
-def int_hexagon_M8_mxmems_wei_b : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_b", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_b : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_b", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_b : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_b", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_b : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_b", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_b : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_b", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_wei_n : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_n", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_n : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_n", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_n : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_n", [IntrArgMemOnly]>;
-
 def int_hexagon_M8_mxmem_wei_hf : 
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_hf", [IntrArgMemOnly]>;
 
-def int_hexagon_M8_mxmems_wei_hf : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_hf", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_hf : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_hf", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_hf : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_hf", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_hf : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_hf", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_hf : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_hf", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_n : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_n", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_n : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_n", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_wei_c : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_c", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_c : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_c", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_c : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_c", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_c : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_c", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_c : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_c", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_wei_n_2x : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_n_2x", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_n_2x : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_n_2x", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_n_2x : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_n_2x", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_n_2x : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_n_2x", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_n_2x : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_n_2x", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmem_wei_n_2x : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_n_2x", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmem_wei_f8 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_f8", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_wei_f8 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_f8", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_f8 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_f8", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_f8 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_f8", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_f8 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_f8", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_f8 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_f8", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_wei_sc : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_sc", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_sc : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_sc", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_sc : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_sc", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_sc : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_sc", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_sc : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_sc", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_wei_b1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_b1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_b1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_b1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_b1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_b1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_b1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_b1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_b1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_b1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_wei_sb1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_sb1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_sb1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_sb1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_sb1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_sb1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_sb1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_sb1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_sb1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_sb1", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmems_wei_sm : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_sm", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdr_wei_sm : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_sm", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdp_wei_sm : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_sm", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmema_wei_sm : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_sm", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmemdi_wei_sm : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_sm", [IntrArgMemOnly]>;
-
-def int_hexagon_M8_mxmem_wei_b1 : 
-Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_b1", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxmem_wei_n : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_n", [IntrArgMemOnly]>;
 
 def int_hexagon_M8_mxmem_wei_sb1 : 
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_sb1", [IntrArgMemOnly]>;
@@ -7074,3 +7005,270 @@ Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_sc", [IntrArgMemOnly]>;
 
 def int_hexagon_M8_mxmem_wei_sm : 
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_sm", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_b : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_b", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_b1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_b1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_c : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_c", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_hf", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_n : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_n", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_sb1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_sb1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_sc : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_sc", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_sm : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_sm", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemd_blk_dm_act_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemd_blk_dm_act_ub", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemd_blk_sm_act_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemd_blk_sm_act_hf", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemd_blk_sm_act_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemd_blk_sm_act_ub", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_b : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_b", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_b1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_b1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_c : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_c", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_hf", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_n : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_n", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_sb1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_sb1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_sc : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_sc", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_sm : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_sm", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_b : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_b", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_b1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_b1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_c : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_c", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_hf", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_n : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_n", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_sb1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_sb1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_sc : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_sc", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_sm : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_sm", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_b : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_b", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_b1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_b1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_c : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_c", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_hf", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_n : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_n", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_sb1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_sb1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_sc : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_sc", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_sm : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_sm", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_blk_dm_act_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_blk_dm_act_ub", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_blk_sm_act_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_blk_sm_act_hf", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_blk_sm_act_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_blk_sm_act_ub", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_b : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_b", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_b1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_b1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_c : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_c", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_hf", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_n : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_n", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_sb1 : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_sb1", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_sc : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_sc", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_sm : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_sm", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemu_blk_dm_act_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_dm_act_ub", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemu_blk_sm_act_hf : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_sm_act_hf", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemu_blk_sm_act_ub : 
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_sm_act_ub", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxswap : 
+Hexagon____Intrinsic<"HEXAGON_M8_mxswap">;
+
+def int_hexagon_M8_mxswap_hf : 
+Hexagon____Intrinsic<"HEXAGON_M8_mxswap_hf">;
+
+// HMX V69 Instructions.
+def int_hexagon_M8_mxcvta_sat_uh2x2 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvta_sat_uh2x2", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvta_sat_uh2x2_r :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvta_sat_uh2x2_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvta_uh2x2 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvta_uh2x2", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvta_uh2x2_r :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvta_uh2x2_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtb_sat_uh2x2 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtb_sat_uh2x2", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtb_sat_uh2x2_r :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtb_sat_uh2x2_r", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtb_uh2x2 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtb_uh2x2", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxcvtb_uh2x2_r :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtb_uh2x2_r", [IntrWriteMem]>;
+
+
+// HMX V73 Instructions.
+def int_hexagon_M8_cvt_rs_hf :
+Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_hf">;
+
+def int_hexagon_M8_cvt_rs_ub :
+Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_ub">;
+
+def int_hexagon_M8_cvt_rs_ub_sc0 :
+Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_ub_sc0">;
+
+def int_hexagon_M8_cvt_rs_ub_sc1 :
+Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_ub_sc1">;
+
+def int_hexagon_M8_cvt_rs_uh_2x1 :
+Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_uh_2x1">;
+
+def int_hexagon_M8_cvt_rs_uh_2x2 :
+Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_uh_2x2">;
+
+def int_hexagon_M8_mxmem :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxmem_2x2 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_2x2", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxmem_cm :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_cm", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxmem_wei_n_2x :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_n_2x", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_n_2x :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_n_2x", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_n_2x :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_n_2x", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_n_2x :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_n_2x", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_n_2x :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_n_2x", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_n_2x :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_n_2x", [IntrArgMemOnly]>;
+
+
+// HMX V79 Instructions.
+def int_hexagon_M8_mxmem_blk_sm_act_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_blk_sm_act_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmem_cm_deep :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_cm_deep", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxmem_deep :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_deep", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxmem_sm_act_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_sm_act_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmem_wei_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_wei_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmema_wei_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmema_wei_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemd_blk_sm_act_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemd_blk_sm_act_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdi_wei_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdi_wei_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdp_wei_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdp_wei_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemdr_wei_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemdr_wei_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_blk_sm_act_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_blk_sm_act_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmems_wei_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_f8", [IntrArgMemOnly]>;
+
+def int_hexagon_M8_mxmemu_blk_sm_act_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_sm_act_f8", [IntrArgMemOnly]>;
+

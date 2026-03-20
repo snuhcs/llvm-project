@@ -11,10 +11,10 @@
 // ScalarItin HVXItin contain some old itineraries // still used by a handful
 // of instructions. Hopefully, we will be able to get rid of them soon.
 def HexagonV73ItinList : DepScalarItinV73, ScalarItin,
-                         DepHVXItinV73, HVXItin, PseudoItin {
+                         DepHVXItinV73, HVXItin, DepHMXItinV73, HMXItin, PseudoItin {
   list<InstrItinData> ItinList =
     !listconcat(DepScalarItinV73_list, ScalarItin_list,
-                DepHVXItinV73_list, HVXItin_list, PseudoItin_list);
+                DepHVXItinV73_list, HVXItin_list, DepHMXItinV73_list, HMXItin_list, PseudoItin_list);
 }
 
 def HexagonItinerariesV73 :

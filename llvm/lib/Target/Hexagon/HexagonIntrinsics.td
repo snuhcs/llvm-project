@@ -467,90 +467,183 @@ multiclass T_mxmem_load_pat <InstHexagon MI, Intrinsic IntID> {
   def : Pat<(IntID IntRegs:$Rs, IntRegs:$Rt), (MI IntRegs:$Rs, IntRegs:$Rt)>;
 }
 
-let Predicates = [UseHVXV79, UseHMX] in {
-  // activation
-  defm : T_mxmem_load_pat<M8_mxmem_sm_act_ub, int_hexagon_M8_mxmem_sm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmem_dm_act_ub, int_hexagon_M8_mxmem_dm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmemd_blk_sm_act_ub, int_hexagon_M8_mxmemd_blk_sm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmemd_blk_dm_act_ub, int_hexagon_M8_mxmemd_blk_dm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmem_blk_sm_act_ub, int_hexagon_M8_mxmem_blk_sm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmem_blk_dm_act_ub, int_hexagon_M8_mxmem_blk_dm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmemu_blk_sm_act_ub, int_hexagon_M8_mxmemu_blk_sm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmemu_blk_dm_act_ub, int_hexagon_M8_mxmemu_blk_dm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmems_blk_sm_act_ub, int_hexagon_M8_mxmems_blk_sm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmems_blk_dm_act_ub, int_hexagon_M8_mxmems_blk_dm_act_ub>;
-  defm : T_mxmem_load_pat<M8_mxmem_sm_act_hf, int_hexagon_M8_mxmem_sm_act_hf>;
-  defm : T_mxmem_load_pat<M8_mxmem_blk_sm_act_hf, int_hexagon_M8_mxmem_blk_sm_act_hf>;
-  defm : T_mxmem_load_pat<M8_mxmemu_blk_sm_act_hf, int_hexagon_M8_mxmemu_blk_sm_act_hf>;
-  defm : T_mxmem_load_pat<M8_mxmems_blk_sm_act_hf, int_hexagon_M8_mxmems_blk_sm_act_hf>;
-  defm : T_mxmem_load_pat<M8_mxmemd_blk_sm_act_hf, int_hexagon_M8_mxmemd_blk_sm_act_hf>;
-  defm : T_mxmem_load_pat<M8_mxmem_sm_act_f8, int_hexagon_M8_mxmem_sm_act_f8>;
-  defm : T_mxmem_load_pat<M8_mxmem_blk_sm_act_f8, int_hexagon_M8_mxmem_blk_sm_act_f8>;
-  defm : T_mxmem_load_pat<M8_mxmemu_blk_sm_act_f8, int_hexagon_M8_mxmemu_blk_sm_act_f8>;
-  defm : T_mxmem_load_pat<M8_mxmems_blk_sm_act_f8, int_hexagon_M8_mxmems_blk_sm_act_f8>;
-  defm : T_mxmem_load_pat<M8_mxmemd_blk_sm_act_f8, int_hexagon_M8_mxmemd_blk_sm_act_f8>;
+multiclass T_mxmem_store_pat <InstHexagon MI, Intrinsic IntID> {
+  def : Pat<(IntID IntRegs:$Rs, IntRegs:$Rt), (MI IntRegs:$Rs, IntRegs:$Rt)>;
+}
 
-  // weight
-  defm : T_mxmem_load_pat<M8_mxmem_wei_b, int_hexagon_M8_mxmem_wei_b>;
-  defm : T_mxmem_load_pat<M8_mxmem_wei_n, int_hexagon_M8_mxmem_wei_n>;
-  defm : T_mxmem_load_pat<M8_mxmem_wei_c, int_hexagon_M8_mxmem_wei_c>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_b, int_hexagon_M8_mxmems_wei_b>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_b, int_hexagon_M8_mxmemdr_wei_b>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_b, int_hexagon_M8_mxmemdp_wei_b>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_b, int_hexagon_M8_mxmema_wei_b>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_b, int_hexagon_M8_mxmemdi_wei_b>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_n, int_hexagon_M8_mxmems_wei_n>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_n, int_hexagon_M8_mxmemdr_wei_n>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_n, int_hexagon_M8_mxmemdp_wei_n>;
-  defm : T_mxmem_load_pat<M8_mxmem_wei_hf, int_hexagon_M8_mxmem_wei_hf>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_hf, int_hexagon_M8_mxmems_wei_hf>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_hf, int_hexagon_M8_mxmemdr_wei_hf>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_hf, int_hexagon_M8_mxmemdp_wei_hf>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_hf, int_hexagon_M8_mxmema_wei_hf>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_hf, int_hexagon_M8_mxmemdi_wei_hf>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_n, int_hexagon_M8_mxmema_wei_n>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_n, int_hexagon_M8_mxmemdi_wei_n>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_c, int_hexagon_M8_mxmems_wei_c>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_c, int_hexagon_M8_mxmemdr_wei_c>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_c, int_hexagon_M8_mxmemdp_wei_c>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_c, int_hexagon_M8_mxmema_wei_c>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_c, int_hexagon_M8_mxmemdi_wei_c>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_n_2x, int_hexagon_M8_mxmems_wei_n_2x>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_n_2x, int_hexagon_M8_mxmemdr_wei_n_2x>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_n_2x, int_hexagon_M8_mxmemdp_wei_n_2x>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_n_2x, int_hexagon_M8_mxmemdi_wei_n_2x>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_n_2x, int_hexagon_M8_mxmema_wei_n_2x>;
-  defm : T_mxmem_load_pat<M8_mxmem_wei_n_2x, int_hexagon_M8_mxmem_wei_n_2x>;
-  defm : T_mxmem_load_pat<M8_mxmem_wei_f8, int_hexagon_M8_mxmem_wei_f8>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_f8, int_hexagon_M8_mxmems_wei_f8>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_f8, int_hexagon_M8_mxmemdr_wei_f8>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_f8, int_hexagon_M8_mxmemdp_wei_f8>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_f8, int_hexagon_M8_mxmema_wei_f8>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_f8, int_hexagon_M8_mxmemdi_wei_f8>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_sc, int_hexagon_M8_mxmems_wei_sc>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_sc, int_hexagon_M8_mxmemdr_wei_sc>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_sc, int_hexagon_M8_mxmemdp_wei_sc>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_sc, int_hexagon_M8_mxmema_wei_sc>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_sc, int_hexagon_M8_mxmemdi_wei_sc>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_b1, int_hexagon_M8_mxmems_wei_b1>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_b1, int_hexagon_M8_mxmemdr_wei_b1>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_b1, int_hexagon_M8_mxmemdp_wei_b1>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_b1, int_hexagon_M8_mxmema_wei_b1>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_b1, int_hexagon_M8_mxmemdi_wei_b1>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_sb1, int_hexagon_M8_mxmems_wei_sb1>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_sb1, int_hexagon_M8_mxmemdr_wei_sb1>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_sb1, int_hexagon_M8_mxmemdp_wei_sb1>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_sb1, int_hexagon_M8_mxmema_wei_sb1>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_sb1, int_hexagon_M8_mxmemdi_wei_sb1>;
-  defm : T_mxmem_load_pat<M8_mxmems_wei_sm, int_hexagon_M8_mxmems_wei_sm>;
-  defm : T_mxmem_load_pat<M8_mxmemdr_wei_sm, int_hexagon_M8_mxmemdr_wei_sm>;
-  defm : T_mxmem_load_pat<M8_mxmemdp_wei_sm, int_hexagon_M8_mxmemdp_wei_sm>;
-  defm : T_mxmem_load_pat<M8_mxmema_wei_sm, int_hexagon_M8_mxmema_wei_sm>;
-  defm : T_mxmem_load_pat<M8_mxmemdi_wei_sm, int_hexagon_M8_mxmemdi_wei_sm>;
-  defm : T_mxmem_load_pat<M8_mxmem_wei_b1, int_hexagon_M8_mxmem_wei_b1>;
-  defm : T_mxmem_load_pat<M8_mxmem_wei_sb1, int_hexagon_M8_mxmem_wei_sb1>;
-  defm : T_mxmem_load_pat<M8_mxmem_wei_sc, int_hexagon_M8_mxmem_wei_sc>;
-  defm : T_mxmem_load_pat<M8_mxmem_wei_sm, int_hexagon_M8_mxmem_wei_sm>;
+multiclass T_mxmem_bias_load_pat <InstHexagon MI, Intrinsic IntID> {
+  def : Pat<(IntID IntRegs:$Rs), (MI IntRegs:$Rs)>;
+}
+
+multiclass T_mxmem_bias_store_pat <InstHexagon MI, Intrinsic IntID> {
+  def : Pat<(IntID IntRegs:$Rs), (MI IntRegs:$Rs)>;
+}
+
+multiclass T_mx_cvt_acc_pat <InstHexagon MI, Intrinsic IntID> {
+  def : Pat<(IntID IntRegs:$Rs), (MI IntRegs:$Rs)>;
+}
+
+multiclass T_mxmem_cvt_store_pat <InstHexagon MI, Intrinsic IntID> {
+  def : Pat<(IntID IntRegs:$Rs, IntRegs:$Rt), (MI IntRegs:$Rs, IntRegs:$Rt)>;
+}
+
+multiclass T_mx_acc_control_pat <InstHexagon MI, Intrinsic IntID> {
+  def : Pat<(IntID), (MI)>;
+}
+
+let Predicates = [UseHMX] in {
+  defm : T_mx_acc_control_pat<M8_mxaccshl, int_hexagon_M8_mxaccshl>;  // acc=mxshl(acc,#16)
+  defm : T_mx_acc_control_pat<M8_mxclracc, int_hexagon_M8_mxclracc>;  // mxclracc
+  defm : T_mx_acc_control_pat<M8_mxclracc_hf, int_hexagon_M8_mxclracc_hf>;  // mxclracc.hf
+  defm : T_mxmem_store_pat<M8_mxcvta_sat_uh, int_hexagon_M8_mxcvta_sat_uh>;  // mxmem(Rs32,Rt32):after:sat.uh=acc:2x1
+  defm : T_mxmem_store_pat<M8_mxcvta_sat_uh_r, int_hexagon_M8_mxcvta_sat_uh_r>;  // mxmem(Rs32,Rt32):after:retain:sat.uh=acc:2x1
+  defm : T_mxmem_store_pat<M8_mxcvta_uh, int_hexagon_M8_mxcvta_uh>;  // mxmem(Rs32,Rt32):after.uh=acc:2x1
+  defm : T_mxmem_store_pat<M8_mxcvta_uh_r, int_hexagon_M8_mxcvta_uh_r>;  // mxmem(Rs32,Rt32):after:retain.uh=acc:2x1
+  defm : T_mxmem_store_pat<M8_mxcvtb_sat_uh, int_hexagon_M8_mxcvtb_sat_uh>;  // mxmem(Rs32,Rt32):before:sat.uh=acc:2x1
+  defm : T_mxmem_store_pat<M8_mxcvtb_sat_uh_r, int_hexagon_M8_mxcvtb_sat_uh_r>;  // mxmem(Rs32,Rt32):before:retain:sat.uh=acc:2x1
+  defm : T_mxmem_store_pat<M8_mxcvtb_uh, int_hexagon_M8_mxcvtb_uh>;  // mxmem(Rs32,Rt32):before.uh=acc:2x1
+  defm : T_mxmem_store_pat<M8_mxcvtb_uh_r, int_hexagon_M8_mxcvtb_uh_r>;  // mxmem(Rs32,Rt32):before:retain.uh=acc:2x1
+  defm : T_mxmem_store_pat<M8_mxcvtl_dm_sat_ub, int_hexagon_M8_mxcvtl_dm_sat_ub>;  // mxmem(Rs32,Rt32):before:cm:sat.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_dm_sat_ub_r, int_hexagon_M8_mxcvtl_dm_sat_ub_r>;  // mxmem(Rs32,Rt32):before:retain:cm:sat.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_dm_ub, int_hexagon_M8_mxcvtl_dm_ub>;  // mxmem(Rs32,Rt32):before:cm.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_dm_ub_r, int_hexagon_M8_mxcvtl_dm_ub_r>;  // mxmem(Rs32,Rt32):before:retain:cm.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_sat_hf, int_hexagon_M8_mxcvtl_sat_hf>;  // mxmem(Rs32,Rt32):before.hf=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_sat_hf_r, int_hexagon_M8_mxcvtl_sat_hf_r>;  // mxmem(Rs32,Rt32):before:retain.hf=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_sat_pos_hf, int_hexagon_M8_mxcvtl_sat_pos_hf>;  // mxmem(Rs32,Rt32):before:pos.hf=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_sat_pos_hf_r, int_hexagon_M8_mxcvtl_sat_pos_hf_r>;  // mxmem(Rs32,Rt32):before:retain:pos.hf=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_sat_ub, int_hexagon_M8_mxcvtl_sat_ub>;  // mxmem(Rs32,Rt32):before:sat.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_sat_ub_r, int_hexagon_M8_mxcvtl_sat_ub_r>;  // mxmem(Rs32,Rt32):before:retain:sat.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_ub, int_hexagon_M8_mxcvtl_ub>;  // mxmem(Rs32,Rt32):before.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtl_ub_r, int_hexagon_M8_mxcvtl_ub_r>;  // mxmem(Rs32,Rt32):before:retain.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_dm_sat_ub, int_hexagon_M8_mxcvtr_dm_sat_ub>;  // mxmem(Rs32,Rt32):after:cm:sat.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_dm_sat_ub_r, int_hexagon_M8_mxcvtr_dm_sat_ub_r>;  // mxmem(Rs32,Rt32):after:retain:cm:sat.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_dm_ub, int_hexagon_M8_mxcvtr_dm_ub>;  // mxmem(Rs32,Rt32):after:cm.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_dm_ub_r, int_hexagon_M8_mxcvtr_dm_ub_r>;  // mxmem(Rs32,Rt32):after:retain:cm.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_sat_hf, int_hexagon_M8_mxcvtr_sat_hf>;  // mxmem(Rs32,Rt32):after.hf=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_sat_hf_r, int_hexagon_M8_mxcvtr_sat_hf_r>;  // mxmem(Rs32,Rt32):after:retain.hf=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_sat_pos_hf, int_hexagon_M8_mxcvtr_sat_pos_hf>;  // mxmem(Rs32,Rt32):after:pos.hf=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_sat_pos_hf_r, int_hexagon_M8_mxcvtr_sat_pos_hf_r>;  // mxmem(Rs32,Rt32):after:retain:pos.hf=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_sat_ub, int_hexagon_M8_mxcvtr_sat_ub>;  // mxmem(Rs32,Rt32):after:sat.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_sat_ub_r, int_hexagon_M8_mxcvtr_sat_ub_r>;  // mxmem(Rs32,Rt32):after:retain:sat.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_ub, int_hexagon_M8_mxcvtr_ub>;  // mxmem(Rs32,Rt32):after.ub=acc
+  defm : T_mxmem_store_pat<M8_mxcvtr_ub_r, int_hexagon_M8_mxcvtr_ub_r>;  // mxmem(Rs32,Rt32):after:retain.ub=acc
+  defm : T_mxmem_bias_load_pat<M8_mxmem2_bias, int_hexagon_M8_mxmem2_bias>;  // bias=mxmem2(Rs32)
+  defm : T_mxmem_bias_store_pat<M8_mxmem2_st_bias, int_hexagon_M8_mxmem2_st_bias>;  // mxmem2(Rs32)=bias
+  defm : T_mxmem_bias_load_pat<M8_mxmem_bias, int_hexagon_M8_mxmem_bias>;  // bias=mxmem(Rs32)
+  defm : T_mxmem_load_pat<M8_mxmem_blk_dm_act_ub, int_hexagon_M8_mxmem_blk_dm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32):cm
+  defm : T_mxmem_load_pat<M8_mxmem_blk_sm_act_hf, int_hexagon_M8_mxmem_blk_sm_act_hf>;  // activation.hf=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmem_blk_sm_act_ub, int_hexagon_M8_mxmem_blk_sm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmem_dm_act_ub, int_hexagon_M8_mxmem_dm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32):deep:cm
+  defm : T_mxmem_load_pat<M8_mxmem_sm_act_hf, int_hexagon_M8_mxmem_sm_act_hf>;  // activation.hf=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmem_sm_act_ub, int_hexagon_M8_mxmem_sm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_bias_store_pat<M8_mxmem_st_bias, int_hexagon_M8_mxmem_st_bias>;  // mxmem(Rs32)=bias
+  defm : T_mxmem_load_pat<M8_mxmem_wei_b, int_hexagon_M8_mxmem_wei_b>;  // weight.b=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmem_wei_b1, int_hexagon_M8_mxmem_wei_b1>;  // weight.ubit=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmem_wei_c, int_hexagon_M8_mxmem_wei_c>;  // weight.c=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmem_wei_hf, int_hexagon_M8_mxmem_wei_hf>;  // weight.hf=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmem_wei_n, int_hexagon_M8_mxmem_wei_n>;  // weight.n=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmem_wei_sb1, int_hexagon_M8_mxmem_wei_sb1>;  // weight.sbit=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmem_wei_sc, int_hexagon_M8_mxmem_wei_sc>;  // weight.sc=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmem_wei_sm, int_hexagon_M8_mxmem_wei_sm>;  // weight.sm=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmema_wei_b, int_hexagon_M8_mxmema_wei_b>;  // weight.b=mxmem(Rs32,Rt32):after
+  defm : T_mxmem_load_pat<M8_mxmema_wei_b1, int_hexagon_M8_mxmema_wei_b1>;  // weight.ubit=mxmem(Rs32,Rt32):after
+  defm : T_mxmem_load_pat<M8_mxmema_wei_c, int_hexagon_M8_mxmema_wei_c>;  // weight.c=mxmem(Rs32,Rt32):after
+  defm : T_mxmem_load_pat<M8_mxmema_wei_hf, int_hexagon_M8_mxmema_wei_hf>;  // weight.hf=mxmem(Rs32,Rt32):after
+  defm : T_mxmem_load_pat<M8_mxmema_wei_n, int_hexagon_M8_mxmema_wei_n>;  // weight.n=mxmem(Rs32,Rt32):after
+  defm : T_mxmem_load_pat<M8_mxmema_wei_sb1, int_hexagon_M8_mxmema_wei_sb1>;  // weight.sbit=mxmem(Rs32,Rt32):after
+  defm : T_mxmem_load_pat<M8_mxmema_wei_sc, int_hexagon_M8_mxmema_wei_sc>;  // weight.sc=mxmem(Rs32,Rt32):after
+  defm : T_mxmem_load_pat<M8_mxmema_wei_sm, int_hexagon_M8_mxmema_wei_sm>;  // weight.sm=mxmem(Rs32,Rt32):after
+  defm : T_mxmem_load_pat<M8_mxmemd_blk_dm_act_ub, int_hexagon_M8_mxmemd_blk_dm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32):dilate:cm
+  defm : T_mxmem_load_pat<M8_mxmemd_blk_sm_act_hf, int_hexagon_M8_mxmemd_blk_sm_act_hf>;  // activation.hf=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemd_blk_sm_act_ub, int_hexagon_M8_mxmemd_blk_sm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_b, int_hexagon_M8_mxmemdi_wei_b>;  // weight.b=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_b1, int_hexagon_M8_mxmemdi_wei_b1>;  // weight.ubit=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_c, int_hexagon_M8_mxmemdi_wei_c>;  // weight.c=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_hf, int_hexagon_M8_mxmemdi_wei_hf>;  // weight.hf=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_n, int_hexagon_M8_mxmemdi_wei_n>;  // weight.n=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_sb1, int_hexagon_M8_mxmemdi_wei_sb1>;  // weight.sbit=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_sc, int_hexagon_M8_mxmemdi_wei_sc>;  // weight.sc=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_sm, int_hexagon_M8_mxmemdi_wei_sm>;  // weight.sm=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_b, int_hexagon_M8_mxmemdp_wei_b>;  // weight.b=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_b1, int_hexagon_M8_mxmemdp_wei_b1>;  // weight.ubit=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_c, int_hexagon_M8_mxmemdp_wei_c>;  // weight.c=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_hf, int_hexagon_M8_mxmemdp_wei_hf>;  // weight.hf=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_n, int_hexagon_M8_mxmemdp_wei_n>;  // weight.n=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_sb1, int_hexagon_M8_mxmemdp_wei_sb1>;  // weight.sbit=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_sc, int_hexagon_M8_mxmemdp_wei_sc>;  // weight.sc=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_sm, int_hexagon_M8_mxmemdp_wei_sm>;  // weight.sm=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_b, int_hexagon_M8_mxmemdr_wei_b>;  // weight.b=mxmem(Rs32,Rt32):drop
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_b1, int_hexagon_M8_mxmemdr_wei_b1>;  // weight.ubit=mxmem(Rs32,Rt32):drop
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_c, int_hexagon_M8_mxmemdr_wei_c>;  // weight.c=mxmem(Rs32,Rt32):drop
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_hf, int_hexagon_M8_mxmemdr_wei_hf>;  // weight.hf=mxmem(Rs32,Rt32):drop
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_n, int_hexagon_M8_mxmemdr_wei_n>;  // weight.n=mxmem(Rs32,Rt32):drop
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_sb1, int_hexagon_M8_mxmemdr_wei_sb1>;  // weight.sbit=mxmem(Rs32,Rt32):drop
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_sc, int_hexagon_M8_mxmemdr_wei_sc>;  // weight.sc=mxmem(Rs32,Rt32):drop
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_sm, int_hexagon_M8_mxmemdr_wei_sm>;  // weight.sm=mxmem(Rs32,Rt32):drop
+  defm : T_mxmem_load_pat<M8_mxmems_blk_dm_act_ub, int_hexagon_M8_mxmems_blk_dm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32):single:cm
+  defm : T_mxmem_load_pat<M8_mxmems_blk_sm_act_hf, int_hexagon_M8_mxmems_blk_sm_act_hf>;  // activation.hf=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_blk_sm_act_ub, int_hexagon_M8_mxmems_blk_sm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_wei_b, int_hexagon_M8_mxmems_wei_b>;  // weight.b=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_wei_b1, int_hexagon_M8_mxmems_wei_b1>;  // weight.ubit=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_wei_c, int_hexagon_M8_mxmems_wei_c>;  // weight.c=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_wei_hf, int_hexagon_M8_mxmems_wei_hf>;  // weight.hf=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_wei_n, int_hexagon_M8_mxmems_wei_n>;  // weight.n=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_wei_sb1, int_hexagon_M8_mxmems_wei_sb1>;  // weight.sbit=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_wei_sc, int_hexagon_M8_mxmems_wei_sc>;  // weight.sc=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_wei_sm, int_hexagon_M8_mxmems_wei_sm>;  // weight.sm=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmemu_blk_dm_act_ub, int_hexagon_M8_mxmemu_blk_dm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32):above:cm
+  defm : T_mxmem_load_pat<M8_mxmemu_blk_sm_act_hf, int_hexagon_M8_mxmemu_blk_sm_act_hf>;  // activation.hf=mxmem(Rs32,Rt32):above
+  defm : T_mxmem_load_pat<M8_mxmemu_blk_sm_act_ub, int_hexagon_M8_mxmemu_blk_sm_act_ub>;  // activation.ub=mxmem(Rs32,Rt32):above
+  defm : T_mx_acc_control_pat<M8_mxswap, int_hexagon_M8_mxswap>;  // mxswapacc
+  defm : T_mx_acc_control_pat<M8_mxswap_hf, int_hexagon_M8_mxswap_hf>;  // mxswapacc.hf
+}
+
+// 69
+let Predicates = [UseHVXV69, UseHMX] in {
+  defm : T_mxmem_store_pat<M8_mxcvta_sat_uh2x2, int_hexagon_M8_mxcvta_sat_uh2x2>;  // mxmem(Rs32,Rt32):after:sat.uh=acc:2x2
+  defm : T_mxmem_store_pat<M8_mxcvta_sat_uh2x2_r, int_hexagon_M8_mxcvta_sat_uh2x2_r>;  // mxmem(Rs32,Rt32):after:retain:sat.uh=acc:2x2
+  defm : T_mxmem_store_pat<M8_mxcvta_uh2x2, int_hexagon_M8_mxcvta_uh2x2>;  // mxmem(Rs32,Rt32):after.uh=acc:2x2
+  defm : T_mxmem_store_pat<M8_mxcvta_uh2x2_r, int_hexagon_M8_mxcvta_uh2x2_r>;  // mxmem(Rs32,Rt32):after:retain.uh=acc:2x2
+  defm : T_mxmem_store_pat<M8_mxcvtb_sat_uh2x2, int_hexagon_M8_mxcvtb_sat_uh2x2>;  // mxmem(Rs32,Rt32):before:sat.uh=acc:2x2
+  defm : T_mxmem_store_pat<M8_mxcvtb_sat_uh2x2_r, int_hexagon_M8_mxcvtb_sat_uh2x2_r>;  // mxmem(Rs32,Rt32):before:retain:sat.uh=acc:2x2
+  defm : T_mxmem_store_pat<M8_mxcvtb_uh2x2, int_hexagon_M8_mxcvtb_uh2x2>;  // mxmem(Rs32,Rt32):before.uh=acc:2x2
+  defm : T_mxmem_store_pat<M8_mxcvtb_uh2x2_r, int_hexagon_M8_mxcvtb_uh2x2_r>;  // mxmem(Rs32,Rt32):before:retain.uh=acc:2x2
+}
+
+// 73
+let Predicates = [UseHVXV73, UseHMX] in {
+  defm : T_mx_cvt_acc_pat<M8_cvt_rs_hf, int_hexagon_M8_cvt_rs_hf>;  // cvt.hf=acc(Rs32)
+  defm : T_mx_cvt_acc_pat<M8_cvt_rs_ub, int_hexagon_M8_cvt_rs_ub>;  // cvt.ub=acc(Rs32)
+  defm : T_mx_cvt_acc_pat<M8_cvt_rs_ub_sc0, int_hexagon_M8_cvt_rs_ub_sc0>;  // cvt.ub=acc(Rs32):sc0
+  defm : T_mx_cvt_acc_pat<M8_cvt_rs_ub_sc1, int_hexagon_M8_cvt_rs_ub_sc1>;  // cvt.ub=acc(Rs32):sc1
+  defm : T_mx_cvt_acc_pat<M8_cvt_rs_uh_2x1, int_hexagon_M8_cvt_rs_uh_2x1>;  // cvt.uh=acc(Rs32):2x1
+  defm : T_mx_cvt_acc_pat<M8_cvt_rs_uh_2x2, int_hexagon_M8_cvt_rs_uh_2x2>;  // cvt.uh=acc(Rs32):2x2
+  defm : T_mxmem_cvt_store_pat<M8_mxmem, int_hexagon_M8_mxmem>;  // mxmem(Rs32,Rt32)=cvt
+  defm : T_mxmem_cvt_store_pat<M8_mxmem_2x2, int_hexagon_M8_mxmem_2x2>;  // mxmem(Rs32,Rt32):2x2=cvt
+  defm : T_mxmem_cvt_store_pat<M8_mxmem_cm, int_hexagon_M8_mxmem_cm>;  // mxmem(Rs32,Rt32):cm=cvt
+  defm : T_mxmem_load_pat<M8_mxmem_wei_n_2x, int_hexagon_M8_mxmem_wei_n_2x>;  // weight.n=mxmem(Rs32,Rt32):2x
+  defm : T_mxmem_load_pat<M8_mxmema_wei_n_2x, int_hexagon_M8_mxmema_wei_n_2x>;  // weight.n=mxmem(Rs32,Rt32):2x:after
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_n_2x, int_hexagon_M8_mxmemdi_wei_n_2x>;  // weight.n=mxmem(Rs32,Rt32):2x:dilate
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_n_2x, int_hexagon_M8_mxmemdp_wei_n_2x>;  // weight.n=mxmem(Rs32,Rt32):2x:deep
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_n_2x, int_hexagon_M8_mxmemdr_wei_n_2x>;  // weight.n=mxmem(Rs32,Rt32):2x:drop
+  defm : T_mxmem_load_pat<M8_mxmems_wei_n_2x, int_hexagon_M8_mxmems_wei_n_2x>;  // weight.n=mxmem(Rs32,Rt32):2x:single
+}
+
+// 79
+let Predicates = [UseHVXV79, UseHMX] in {
+  defm : T_mxmem_load_pat<M8_mxmem_blk_sm_act_f8, int_hexagon_M8_mxmem_blk_sm_act_f8>;  // activation.f8=mxmem(Rs32,Rt32)
+  defm : T_mxmem_store_pat<M8_mxmem_cm_deep, int_hexagon_M8_mxmem_cm_deep>;  // mxmem(Rs32,Rt32):cm:deep=cvt
+  defm : T_mxmem_store_pat<M8_mxmem_deep, int_hexagon_M8_mxmem_deep>;  // mxmem(Rs32,Rt32):deep=cvt
+  defm : T_mxmem_load_pat<M8_mxmem_sm_act_f8, int_hexagon_M8_mxmem_sm_act_f8>;  // activation.f8=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmem_wei_f8, int_hexagon_M8_mxmem_wei_f8>;  // weight.f8=mxmem(Rs32,Rt32)
+  defm : T_mxmem_load_pat<M8_mxmema_wei_f8, int_hexagon_M8_mxmema_wei_f8>;  // weight.f8=mxmem(Rs32,Rt32):after
+  defm : T_mxmem_load_pat<M8_mxmemd_blk_sm_act_f8, int_hexagon_M8_mxmemd_blk_sm_act_f8>;  // activation.f8=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdi_wei_f8, int_hexagon_M8_mxmemdi_wei_f8>;  // weight.f8=mxmem(Rs32,Rt32):dilate
+  defm : T_mxmem_load_pat<M8_mxmemdp_wei_f8, int_hexagon_M8_mxmemdp_wei_f8>;  // weight.f8=mxmem(Rs32,Rt32):deep
+  defm : T_mxmem_load_pat<M8_mxmemdr_wei_f8, int_hexagon_M8_mxmemdr_wei_f8>;  // weight.f8=mxmem(Rs32,Rt32):drop
+  defm : T_mxmem_load_pat<M8_mxmems_blk_sm_act_f8, int_hexagon_M8_mxmems_blk_sm_act_f8>;  // activation.f8=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmems_wei_f8, int_hexagon_M8_mxmems_wei_f8>;  // weight.f8=mxmem(Rs32,Rt32):single
+  defm : T_mxmem_load_pat<M8_mxmemu_blk_sm_act_f8, int_hexagon_M8_mxmemu_blk_sm_act_f8>;  // activation.f8=mxmem(Rs32,Rt32):above
 }
 
 include "HexagonDepMapAsm2Intrin.td"

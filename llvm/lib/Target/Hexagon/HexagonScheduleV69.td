@@ -12,10 +12,10 @@
 // still used by a handful of instructions. Hopefully, we will be able
 // to get rid of them soon.
 def HexagonV69ItinList : DepScalarItinV69, ScalarItin,
-                         DepHVXItinV69, HVXItin, PseudoItin {
+                         DepHVXItinV69, HVXItin, DepHMXItinV69, HMXItin, PseudoItin {
   list<InstrItinData> ItinList =
     !listconcat(DepScalarItinV69_list, ScalarItin_list,
-                DepHVXItinV69_list, HVXItin_list, PseudoItin_list);
+                DepHVXItinV69_list, HVXItin_list, DepHMXItinV69_list, HMXItin_list, PseudoItin_list);
 }
 
 def HexagonItinerariesV69 :
