@@ -6848,13 +6848,13 @@ Hexagon_v64i32_v32i32v32i32_Intrinsic<"HEXAGON_V6_vsub_hf_f8_128B">;
 
 // HMX Instructions.
 def int_hexagon_M8_mxaccshl : 
-Hexagon____Intrinsic<"HEXAGON_M8_mxaccshl">;
+Hexagon____Intrinsic<"HEXAGON_M8_mxaccshl", [IntrHasSideEffects]>;
 
 def int_hexagon_M8_mxclracc : 
-Hexagon____Intrinsic<"HEXAGON_M8_mxclracc">;
+Hexagon____Intrinsic<"HEXAGON_M8_mxclracc", [IntrHasSideEffects]>;
 
 def int_hexagon_M8_mxclracc_hf : 
-Hexagon____Intrinsic<"HEXAGON_M8_mxclracc_hf">;
+Hexagon____Intrinsic<"HEXAGON_M8_mxclracc_hf", [IntrHasSideEffects]>;
 
 def int_hexagon_M8_mxcvta_sat_uh : 
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvta_sat_uh", [IntrWriteMem]>;
@@ -7154,10 +7154,10 @@ def int_hexagon_M8_mxmemu_blk_sm_act_ub :
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_sm_act_ub", [IntrArgMemOnly]>;
 
 def int_hexagon_M8_mxswap : 
-Hexagon____Intrinsic<"HEXAGON_M8_mxswap">;
+Hexagon____Intrinsic<"HEXAGON_M8_mxswap", [IntrHasSideEffects]>;
 
 def int_hexagon_M8_mxswap_hf : 
-Hexagon____Intrinsic<"HEXAGON_M8_mxswap_hf">;
+Hexagon____Intrinsic<"HEXAGON_M8_mxswap_hf", [IntrHasSideEffects]>;
 
 // HMX V69 Instructions.
 def int_hexagon_M8_mxcvta_sat_uh2x2 :

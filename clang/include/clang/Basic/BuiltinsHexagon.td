@@ -2158,51 +2158,51 @@ let Features = HVXV79.Features in {
 
 // V68 HMX Instructions.
 let Features = HMXV68.Features in {
-  // def M8_mxaccshl : HexagonBuiltin<"">;
-  // def M8_mxclracc : HexagonBuiltin<"">;
-  // def M8_mxclracc_hf : HexagonBuiltin<"">;
-  // def M8_mxcvta_sat_uh : HexagonBuiltin<"">;
-  // def M8_mxcvta_sat_uh_r : HexagonBuiltin<"">;
-  // def M8_mxcvta_uh : HexagonBuiltin<"">;
-  // def M8_mxcvta_uh_r : HexagonBuiltin<"">;
-  // def M8_mxcvtb_sat_uh : HexagonBuiltin<"">;
-  // def M8_mxcvtb_sat_uh_r : HexagonBuiltin<"">;
-  // def M8_mxcvtb_uh : HexagonBuiltin<"">;
-  // def M8_mxcvtb_uh_r : HexagonBuiltin<"">;
-  // def M8_mxcvtl_dm_sat_ub : HexagonBuiltin<"">;
-  // def M8_mxcvtl_dm_sat_ub_r : HexagonBuiltin<"">;
-  // def M8_mxcvtl_dm_ub : HexagonBuiltin<"">;
-  // def M8_mxcvtl_dm_ub_r : HexagonBuiltin<"">;
-  // def M8_mxcvtl_sat_hf : HexagonBuiltin<"">;
-  // def M8_mxcvtl_sat_hf_r : HexagonBuiltin<"">;
-  // def M8_mxcvtl_sat_pos_hf : HexagonBuiltin<"">;
-  // def M8_mxcvtl_sat_pos_hf_r : HexagonBuiltin<"">;
-  // def M8_mxcvtl_sat_ub : HexagonBuiltin<"">;
-  // def M8_mxcvtl_sat_ub_r : HexagonBuiltin<"">;
-  // def M8_mxcvtl_ub : HexagonBuiltin<"">;
-  // def M8_mxcvtl_ub_r : HexagonBuiltin<"">;
-  // def M8_mxcvtr_dm_sat_ub : HexagonBuiltin<"">;
-  // def M8_mxcvtr_dm_sat_ub_r : HexagonBuiltin<"">;
-  // def M8_mxcvtr_dm_ub : HexagonBuiltin<"">;
-  // def M8_mxcvtr_dm_ub_r : HexagonBuiltin<"">;
-  // def M8_mxcvtr_sat_hf : HexagonBuiltin<"">;
-  // def M8_mxcvtr_sat_hf_r : HexagonBuiltin<"">;
-  // def M8_mxcvtr_sat_pos_hf : HexagonBuiltin<"">;
-  // def M8_mxcvtr_sat_pos_hf_r : HexagonBuiltin<"">;
-  // def M8_mxcvtr_sat_ub : HexagonBuiltin<"">;
-  // def M8_mxcvtr_sat_ub_r : HexagonBuiltin<"">;
-  // def M8_mxcvtr_ub : HexagonBuiltin<"">;
-  // def M8_mxcvtr_ub_r : HexagonBuiltin<"">;
-  // def M8_mxmem2_bias : HexagonBuiltin<"">;
-  // def M8_mxmem2_st_bias : HexagonBuiltin<"">;
-  // def M8_mxmem_bias : HexagonBuiltin<"">;
+  def M8_mxaccshl : HexagonBuiltin<"void()">;
+  def M8_mxclracc : HexagonBuiltin<"void()">;
+  def M8_mxclracc_hf : HexagonBuiltin<"void()">;
+  def M8_mxcvta_sat_uh : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvta_sat_uh_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvta_uh : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvta_uh_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtb_sat_uh : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtb_sat_uh_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtb_uh : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtb_uh_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_dm_sat_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_dm_sat_ub_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_dm_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_dm_ub_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_sat_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_sat_hf_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_sat_pos_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_sat_pos_hf_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_sat_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_sat_ub_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtl_ub_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_dm_sat_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_dm_sat_ub_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_dm_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_dm_ub_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_sat_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_sat_hf_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_sat_pos_hf : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_sat_pos_hf_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_sat_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_sat_ub_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_ub : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtr_ub_r : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem2_bias : HexagonBuiltin<"void(void *)">;
+  def M8_mxmem2_st_bias : HexagonBuiltin<"void(void *)">;
+  def M8_mxmem_bias : HexagonBuiltin<"void(void *)">;
   def M8_mxmem_blk_dm_act_ub : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_blk_sm_act_hf : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_blk_sm_act_ub : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_dm_act_ub : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_sm_act_hf : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_sm_act_ub : HexagonBuiltin<"void(void *, int)">;
-  // def M8_mxmem_st_bias : HexagonBuiltin<"">;
+  def M8_mxmem_st_bias : HexagonBuiltin<"void(void *)">;
   def M8_mxmem_wei_b : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_wei_b1 : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_wei_c : HexagonBuiltin<"void(void *, int)">;
@@ -2260,32 +2260,32 @@ let Features = HMXV68.Features in {
   def M8_mxmemu_blk_dm_act_ub : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmemu_blk_sm_act_hf : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmemu_blk_sm_act_ub : HexagonBuiltin<"void(void *, int)">;
-  // def M8_mxswap : HexagonBuiltin<"">;
-  // def M8_mxswap_hf : HexagonBuiltin<"">;
-  // def M8_mxcvta_sat_uh2x2 : HexagonBuiltin<"">;
+  def M8_mxswap : HexagonBuiltin<"void()">;
+  def M8_mxswap_hf : HexagonBuiltin<"void()">;
+  def M8_mxcvta_sat_uh2x2 : HexagonBuiltin<"void(void *, int)">;
 }
 
 // V69 HMX Instructions.
-// let Features = HMXV69.Features {
-  // def M8_mxcvta_sat_uh2x2_r: HexagonBuiltin<"">;
-  // def M8_mxcvta_uh2x2: HexagonBuiltin<"">;
-  // def M8_mxcvta_uh2x2_r: HexagonBuiltin<"">;
-  // def M8_mxcvtb_sat_uh2x2: HexagonBuiltin<"">;
-  // def M8_mxcvtb_sat_uh2x2_r: HexagonBuiltin<"">;
-  // def M8_mxcvtb_uh2x2: HexagonBuiltin<"">;
-  // def M8_mxcvtb_uh2x2_r: HexagonBuiltin<"">;
-// }
+let Features = HMXV69.Features in {
+  def M8_mxcvta_sat_uh2x2_r: HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvta_uh2x2: HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvta_uh2x2_r: HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtb_sat_uh2x2: HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtb_sat_uh2x2_r: HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtb_uh2x2: HexagonBuiltin<"void(void *, int)">;
+  def M8_mxcvtb_uh2x2_r: HexagonBuiltin<"void(void *, int)">;
+}
 
 // V73 HMX Instructions.
 let Features = HMXV73.Features in {
-  // def M8_cvt_rs_ub: HexagonBuiltin<"">;
-  // def M8_cvt_rs_ub_sc0: HexagonBuiltin<"">;
-  // def M8_cvt_rs_ub_sc1: HexagonBuiltin<"">;
-  // def M8_cvt_rs_uh_2x1: HexagonBuiltin<"">;
-  // def M8_cvt_rs_uh_2x2: HexagonBuiltin<"">;
-  // def M8_mxmem: HexagonBuiltin<"">;
-  // def M8_mxmem_2x2: HexagonBuiltin<"">;
-  // def M8_mxmem_cm: HexagonBuiltin<"">;
+  def M8_cvt_rs_ub: HexagonBuiltin<"void(void *)">;
+  def M8_cvt_rs_ub_sc0: HexagonBuiltin<"void(void *)">;
+  def M8_cvt_rs_ub_sc1: HexagonBuiltin<"void(void *)">;
+  def M8_cvt_rs_uh_2x1: HexagonBuiltin<"void(void *)">;
+  def M8_cvt_rs_uh_2x2: HexagonBuiltin<"void(void *)">;
+  def M8_mxmem: HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_2x2: HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_cm: HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_wei_n_2x : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmema_wei_n_2x : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmemdi_wei_n_2x : HexagonBuiltin<"void(void *, int)">;
@@ -2295,8 +2295,8 @@ let Features = HMXV73.Features in {
 }
 
 let Features = HMXV79.Features in {
-  // def M8_mxmem_cm_deep : HexagonBuiltin<"">;
-  // def M8_mxmem_deep : HexagonBuiltin<"">;
+  def M8_mxmem_cm_deep : HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_deep : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_blk_sm_act_f8 : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_sm_act_f8 : HexagonBuiltin<"void(void *, int)">;
   def M8_mxmem_wei_f8 : HexagonBuiltin<"void(void *, int)">;
@@ -2310,8 +2310,8 @@ let Features = HMXV79.Features in {
   def M8_mxmemu_blk_sm_act_f8 : HexagonBuiltin<"void(void *, int)">;
 }
 
-// let Features = HMXV81.Features {
-// def M8_cvt_rs_f8: HexagonBuiltin<"">;
-// def M8_mxmem_deep_f8: HexagonBuiltin<"">;
-// def M8_mxmem_f8: HexagonBuiltin<"">;
+// let Features = HMXV81.Features in {
+//   def M8_cvt_rs_f8: HexagonBuiltin<"void(void *)">;
+//   def M8_mxmem_deep_f8: HexagonBuiltin<"void(void *, int)">;
+//   def M8_mxmem_f8: HexagonBuiltin<"void(void *, int)">;
 // }
