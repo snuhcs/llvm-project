@@ -43112,6 +43112,7 @@ let Inst{7-0} = 0b11111110;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxmem_bias : HInst<
@@ -43125,6 +43126,7 @@ let Inst{7-0} = 0b11111111;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxmem2_st_bias : HInst<
@@ -43401,6 +43403,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00000100;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtr_sat_hf_r : HInst<
@@ -43564,6 +43568,7 @@ let Inst{7-0} = 0b00010000;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_cvt_rs_ub : HInst<
@@ -43642,6 +43647,7 @@ let Inst{7-0} = 0b00011000;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxmem_2x2 : HInst<
@@ -43712,6 +43718,7 @@ let Inst{13-0} = 0b00000000010011;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxswap : HInst<

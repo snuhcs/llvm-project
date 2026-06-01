@@ -6952,8 +6952,8 @@ Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_ub", [IntrWriteMem]>;
 def int_hexagon_M8_mxcvtr_ub_r : 
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtr_ub_r", [IntrWriteMem]>;
 
-def int_hexagon_M8_mxmem2_bias : 
-Hexagon__ptr_Intrinsic<"HEXAGON_M8_mxmem2_bias", [IntrArgMemOnly]>;
+def int_hexagon_M8_mxmem2_bias :
+Hexagon__ptr_Intrinsic<"HEXAGON_M8_mxmem2_bias", [IntrArgMemOnly, IntrHasSideEffects]>;
 
 def int_hexagon_M8_mxmem2_st_bias : 
 Hexagon__ptr_Intrinsic<"HEXAGON_M8_mxmem2_st_bias", [IntrWriteMem]>;
@@ -7187,7 +7187,7 @@ Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxcvtb_uh2x2_r", [IntrWriteMem]>;
 
 // HMX V73 Instructions.
 def int_hexagon_M8_cvt_rs_hf :
-Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_hf">;
+Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_hf", [IntrHasSideEffects]>;
 
 def int_hexagon_M8_cvt_rs_ub :
 Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_ub">;

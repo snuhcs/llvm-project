@@ -24,8 +24,10 @@
 #include "llvm/MC/MCSubtargetInfo.h"
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/Debug.h"
+#include "llvm/Support/Format.h"
 #include "llvm/Support/SourceMgr.h"
 #include "llvm/Support/raw_ostream.h"
+#include <cstdlib>
 #include <algorithm>
 #include <cassert>
 #include <optional>
@@ -705,6 +707,20 @@ bool HexagonShuffler::shuffle() {
 void HexagonShuffler::reportResourceError(HexagonPacketSummary const &Summary, StringRef Err) {
   if (ReportErrors)
     reportResourceUsage(Summary);
+  // dike: dump the failing packet to stderr when HEXAGON_DEBUG_SHUFFLE is set
+  // and LLC has no SourceManager. Without this, the only message is
+  // `<unknown>:0: error: invalid instruction packet: slot error` which is
+  // impossible to localise.
+  if (!Context.getSourceManager() && std::getenv("HEXAGON_DEBUG_SHUFFLE")) {
+    errs() << "Hexagon shuffler: failing packet (" << Err << "):\n";
+    for (HexagonInstr const &I : insts()) {
+      errs() << "  opcode=" << I.ID->getOpcode();
+      const unsigned Units = I.Core.getUnits();
+      if (Units)
+        errs() << "  units=" << format_hex(Units, 4);
+      errs() << "\n";
+    }
+  }
   reportError(Twine("invalid instruction packet: ") + Err);
 }
 

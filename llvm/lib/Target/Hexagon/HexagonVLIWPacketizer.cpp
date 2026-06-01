@@ -1780,6 +1780,19 @@ HexagonPacketizerList::addToPacket(MachineInstr &MI) {
     }
     CurrentPacketMIs.push_back(&MI);
     CurrentPacketMIs.push_back(&WeightMI);
+    // HMX activation + weight already saturate both memory slots of the
+    // packet. Allowing any subsequent instruction with a memory operand
+    // (e.g. a stack reload like `L2_loadri_io`) to be packetized in
+    // alongside causes the MC HexagonShuffler to fail with
+    // `invalid instruction packet: slot error`. Force-end the packet
+    // now so the next instruction starts a fresh one. `endPacket`
+    // bundles `[FirstMI, EndMI)`, so pass the position *after* wei so
+    // wei is included in the bundle.
+    auto AfterWeight = std::next(NextIt);
+    if (AfterWeight == MBB->end())
+      endPacket(MBB, WeightMI);
+    else
+      endPacket(MBB, *AfterWeight);
     return MII;
   }
 
