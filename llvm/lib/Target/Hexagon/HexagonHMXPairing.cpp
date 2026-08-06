@@ -31,18 +31,22 @@
 
 #include "Hexagon.h"
 #include "HexagonInstrInfo.h"
+#include "HexagonMachineFunctionInfo.h"
 #include "HexagonRegisterInfo.h"
 #include "HexagonSubtarget.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/SmallSet.h"
 #include "llvm/ADT/SmallVector.h"
+#include "llvm/CodeGen/LivePhysRegs.h"
 #include "llvm/CodeGen/MachineBasicBlock.h"
 #include "llvm/CodeGen/MachineFunction.h"
 #include "llvm/CodeGen/MachineFunctionPass.h"
 #include "llvm/CodeGen/MachineInstr.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 #include "llvm/CodeGen/MachineOperand.h"
+#include "llvm/CodeGen/MachineRegisterInfo.h"
 #include "llvm/CodeGen/Register.h"
+#include "llvm/CodeGen/TargetFrameLowering.h"
 #include "llvm/CodeGen/TargetRegisterInfo.h"
 #include "llvm/InitializePasses.h"
 #include "llvm/Pass.h"
@@ -76,10 +80,37 @@ static bool reorderHMXMxmemInBlock(MachineBasicBlock &MBB,
   if (Acts.empty() || Weights.empty())
     return false;
   bool Changed = false;
-  const MCPhysReg ScratchCandidates[] = {
+  // Scratch candidates, in preference order.
+  //
+  // R6..R15 and R0..R5/R28 are caller-saved, so writing them is ABI-safe
+  // whenever the mention + liveness checks below pass. R16..R27 are
+  // callee-saved: they may be used only when the function already
+  // modifies them elsewhere (the prologue/epilogue then saves and
+  // restores them; this pass runs after PEI, so introducing a def of
+  // an *unsaved* CSR would clobber the caller's value).
+  //
+  // When every candidate is live-through the rename window (fully
+  // unrolled HMX kernels), the pass spills one live-through victim
+  // into HexagonMachineFunctionInfo::HMXScratchSpillFI (reserved in
+  // determineCalleeSaves) and uses that register as scratch for the
+  // window — same store/load + eliminateFrameIndex sequence as
+  // RegScavenger::spill.
+  const MCPhysReg CallerSavedCandidates[] = {
       Hexagon::R6,  Hexagon::R7,  Hexagon::R8,  Hexagon::R9,
       Hexagon::R10, Hexagon::R11, Hexagon::R12, Hexagon::R13,
-      Hexagon::R14, Hexagon::R15};
+      Hexagon::R14, Hexagon::R15, Hexagon::R0,  Hexagon::R1,
+      Hexagon::R2,  Hexagon::R3,  Hexagon::R4,  Hexagon::R5,
+      Hexagon::R28};
+  const MCPhysReg CalleeSavedCandidates[] = {
+      Hexagon::R16, Hexagon::R17, Hexagon::R18, Hexagon::R19,
+      Hexagon::R20, Hexagon::R21, Hexagon::R22, Hexagon::R23,
+      Hexagon::R24, Hexagon::R25, Hexagon::R26, Hexagon::R27};
+  const MachineRegisterInfo &MRI = MF.getRegInfo();
+  SmallVector<MCPhysReg, 32> ScratchCandidates(
+      std::begin(CallerSavedCandidates), std::end(CallerSavedCandidates));
+  for (MCPhysReg CSR : CalleeSavedCandidates)
+    if (MRI.isPhysRegModified(CSR))
+      ScratchCandidates.push_back(CSR);
   for (int P = (int)std::min(Acts.size(), Weights.size()) - 1; P >= 0; --P) {
     MachineBasicBlock::iterator ActIt = Acts[P];
     MachineBasicBlock::iterator WIt = Weights[P];
@@ -290,9 +321,35 @@ static bool reorderHMXMxmemInBlock(MachineBasicBlock &MBB,
         for (const MachineOperand &MO : I->operands()) {
           if (MO.isReg() && MO.getReg() && MO.getReg() == R)
             return false;
+          // A call's register mask clobbers caller-saved registers
+          // without naming them as register operands; a scratch whose
+          // value must survive from the renamed def to the restore
+          // copy cannot cross such a clobber.
+          if (MO.isRegMask() && MO.clobbersPhysReg(R.asMCReg()))
+            return false;
         }
       }
       return true;
+    };
+    // Registers live at the restore insert position. A scratch that is
+    // never *mentioned* inside [ActIt, RestoreLim) can still be
+    // live-*through* that window: defined before act and read after the
+    // restore point (e.g. r6 = add(rBase,#0x780) holding a VTCM layout
+    // address consumed by a later unrolled K-step). Renaming an Rt def
+    // onto such a register silently clobbers the address and the later
+    // vmemu reads the Rt immediate as a pointer (observed on-device as
+    // a TLBMISS at Bad VA 0x780). Window-mention scanning cannot see
+    // this, so additionally require the scratch to be dead at the
+    // restore point, computed from BB live-outs stepped backward.
+    // (LivePhysRegs is neither copyable nor movable, so fill a
+    // caller-provided instance instead of returning one.)
+    auto computeLiveAt = [&](MachineBasicBlock::iterator To,
+                             LivePhysRegs &LPR) {
+      LPR.init(*HRI);
+      LPR.addLiveOuts(MBB);
+      for (auto I = MBB.rbegin(), E = MachineBasicBlock::reverse_iterator(To);
+           I != E; ++I)
+        LPR.stepBackward(*I);
     };
 
     DenseMap<Register, Register> RenameMap;        // def-reg → scratch
@@ -305,40 +362,84 @@ static bool reorderHMXMxmemInBlock(MachineBasicBlock &MBB,
         if (MO.isReg() && MO.getReg() && MO.isDef())
           UsedRegs.insert(MO.getReg());
     }
+
+    // Optional emergency spill of a live-through victim used as scratch
+    // when no dead IntRegs candidate exists. One FI / one victim per
+    // act-wei pair (observed ConflictSet size is 1 at pressure sites).
+    Register EmergencyVictim;
+    MachineInstr *SpillMI = nullptr;
+    MachineInstr *ReloadMI = nullptr;
+    int EmergencyFI =
+        MF.getInfo<HexagonMachineFunctionInfo>()->getHMXScratchSpillFI();
+
     for (const Conflict &C : ConflictSet) {
       // Scratch must be in the same register class as the in-between
       // def we're renaming. We only stock ScratchCandidates with
-      // single-GPR registers (R6..R15), so refuse to pick a scratch
-      // when the def is a wider class. `IntRegs` is the catch-all
-      // 32-bit GPR class; the minimal class for a specific physreg
-      // might be a narrower subset (e.g. IntRegsLow8 for R0..R7),
-      // so check class membership rather than class identity.
+      // single-GPR registers, so refuse to pick a scratch when the
+      // def is a wider class.
       if (!C.DefReg.isPhysical() ||
           !Hexagon::IntRegsRegClass.contains(C.DefReg.asMCReg()))
         continue;
       Register ScratchR;
       auto RestoreLim = RestoreLimit();
+      LivePhysRegs LiveAtRestore;
+      computeLiveAt(RestoreLim, LiveAtRestore);
       for (MCPhysReg Cr : ScratchCandidates) {
         Register CrReg = Cr;
         if (UsedRegs.count(CrReg))
           continue;
         if (!isFreeInRange(CrReg, ActIt, RestoreLim))
           continue;
+        if (LiveAtRestore.contains(Cr))
+          continue;
         ScratchR = CrReg;
         UsedRegs.insert(CrReg);
         break;
       }
-      if (!ScratchR)
-        break;
+      // No dead scratch: spill a live-through victim into the HMX
+      // emergency FI and reuse that physreg for the rename window.
+      if (!ScratchR) {
+        if (EmergencyVictim || EmergencyFI < 0 || ConflictSet.size() != 1)
+          break;
+        for (MCPhysReg Cr : ScratchCandidates) {
+          Register CrReg = Cr;
+          if (UsedRegs.count(CrReg))
+            continue;
+          if (CrReg == C.DefReg || CrReg == C.ActUseReg)
+            continue;
+          if (!LiveAtRestore.contains(Cr))
+            continue;
+          // Victim must not be mentioned inside the window (otherwise
+          // it is not a pure live-through and spilling it is unsafe
+          // without rewriting those uses).
+          if (!isFreeInRange(CrReg, ActIt, RestoreLim))
+            continue;
+          EmergencyVictim = CrReg;
+          ScratchR = CrReg;
+          UsedRegs.insert(CrReg);
+          break;
+        }
+        if (!ScratchR)
+          break;
+        // Spill at ActIt (start of window). isKill=false: value is
+        // reloaded after the restore copies.
+        HII->storeRegToStackSlot(MBB, ActIt, EmergencyVictim,
+                                 /*isKill=*/false, EmergencyFI,
+                                 &Hexagon::IntRegsRegClass, HRI, Register());
+        SpillMI = &*std::prev(ActIt);
+      }
       RenameMap[C.DefReg] = ScratchR;
       RestoreMap[C.ActUseReg] = ScratchR;
     }
 
     if (!ConflictSet.empty() && RenameMap.size() != ConflictSet.size()) {
-      // Could not rename every remaining conflict. Bail out without
-      // splicing rather than emit an incomplete rename. The packetizer
-      // will assert on non-adjacent act/wei and the user will see a
-      // clear failure (rather than a silent miscompile).
+      // Could not rename every remaining conflict. If we already
+      // inserted an emergency spill, erase it before bailing so we
+      // leave the block unmodified.
+      if (SpillMI)
+        SpillMI->eraseFromParent();
+      // Bail out without splicing rather than emit an incomplete
+      // rename. The packetizer will assert on non-adjacent act/wei.
       continue;
     }
 
@@ -416,6 +517,45 @@ static bool reorderHMXMxmemInBlock(MachineBasicBlock &MBB,
       BuildMI(MBB, RestoreInsertPos, WIt->getDebugLoc(),
               HII->get(Hexagon::A2_tfr), OrigReg)
           .addReg(ScratchReg);
+    }
+
+    // Reload the emergency victim after restore copies so its
+    // live-through value is back before any later use.
+    if (EmergencyVictim) {
+      HII->loadRegFromStackSlot(MBB, RestoreInsertPos, EmergencyVictim,
+                                EmergencyFI, &Hexagon::IntRegsRegClass, HRI,
+                                Register());
+      ReloadMI = &*std::prev(RestoreInsertPos);
+
+      // Expand FrameIndex → BP+imm without going through
+      // eliminateFrameIndex's out-of-range path (that creates vregs,
+      // illegal after NoVRegs / PEI). IntRegs spill slots have large
+      // s32 offsets and always fit S2_storeri_io / L2_loadri_io.
+      auto ExpandFI = [&](MachineInstr *MI) {
+        assert(MI && "missing emergency spill/reload");
+        unsigned FIOp = 0;
+        for (unsigned i = 0, e = MI->getNumOperands(); i != e; ++i) {
+          if (MI->getOperand(i).isFI()) {
+            FIOp = i;
+            break;
+          }
+        }
+        assert(MI->getOperand(FIOp).isFI());
+        Register BP;
+        int Offset =
+            MF.getSubtarget<HexagonSubtarget>()
+                .getFrameLowering()
+                ->getFrameIndexReference(MF, MI->getOperand(FIOp).getIndex(),
+                                         BP)
+                .getFixed();
+        Offset += MI->getOperand(FIOp + 1).getImm();
+        assert(HII->isValidOffset(MI->getOpcode(), Offset, HRI) &&
+               "HMX emergency spill offset must fit IntRegs memop");
+        MI->getOperand(FIOp).ChangeToRegister(BP, false, false, false);
+        MI->getOperand(FIOp + 1).ChangeToImmediate(Offset);
+      };
+      ExpandFI(SpillMI);
+      ExpandFI(ReloadMI);
     }
     Changed = true;
   }

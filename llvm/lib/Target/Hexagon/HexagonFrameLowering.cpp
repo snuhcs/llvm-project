@@ -2095,8 +2095,8 @@ void HexagonFrameLowering::determineCalleeSaves(MachineFunction &MF,
 
   // We need to reserve a spill slot if scavenging could potentially require
   // spilling a scavenged register.
+  MachineFrameInfo &MFI = MF.getFrameInfo();
   if (!NewRegs.empty() || mayOverflowFrameOffset(MF)) {
-    MachineFrameInfo &MFI = MF.getFrameInfo();
     MachineRegisterInfo &MRI = MF.getRegInfo();
     SetVector<const TargetRegisterClass*> SpillRCs;
     // Reserve an int register in any case, because it could be used to hold
@@ -2124,6 +2124,23 @@ void HexagonFrameLowering::determineCalleeSaves(MachineFunction &MF,
         int NewFI = MFI.CreateSpillStackObject(S, A);
         RS->addScavengingFrameIndex(NewFI);
       }
+    }
+  }
+
+  // HexagonHMXPairing (PreEmit) may need an IntRegs emergency spill slot
+  // when every allocatable GPR is live-through the act/wei rename window.
+  // Reserve it here so PEI lays out the FI; pairing spills/reloads a
+  // live-through victim into it and expands FI via eliminateFrameIndex.
+  auto &HST = MF.getSubtarget<HexagonSubtarget>();
+  if (HST.useHMXOps()) {
+    auto *FuncInfo = MF.getInfo<HexagonMachineFunctionInfo>();
+    if (FuncInfo->getHMXScratchSpillFI() < 0) {
+      unsigned S = HRI.getSpillSize(Hexagon::IntRegsRegClass);
+      Align A = HRI.getSpillAlign(Hexagon::IntRegsRegClass);
+      int NewFI = MFI.CreateSpillStackObject(S, A);
+      if (RS)
+        RS->addScavengingFrameIndex(NewFI);
+      FuncInfo->setHMXScratchSpillFI(NewFI);
     }
   }
 

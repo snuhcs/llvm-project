@@ -32,6 +32,9 @@ class HexagonMachineFunctionInfo : public MachineFunctionInfo {
   int RegSavedAreaStartFrameIndex;
   int FirstNamedArgFrameIndex;
   int LastNamedArgFrameIndex;
+  // Spill slot for HexagonHMXPairing emergency rename scratch (IntRegs).
+  // Reserved in determineCalleeSaves for +hmx; -1 if unused.
+  int HMXScratchSpillFI = -1;
   bool HasClobberLR = false;
   bool HasEHReturn = false;
   std::map<const MachineInstr*, unsigned> PacketInfo;
@@ -62,6 +65,9 @@ public:
 
   void setLastNamedArgFrameIndex(int v) { LastNamedArgFrameIndex = v; }
   int getLastNamedArgFrameIndex() { return LastNamedArgFrameIndex; }
+
+  void setHMXScratchSpillFI(int FI) { HMXScratchSpillFI = FI; }
+  int getHMXScratchSpillFI() const { return HMXScratchSpillFI; }
 
   void setStartPacket(MachineInstr* MI) {
     PacketInfo[MI] |= Hexagon::StartPacket;
