@@ -1084,6 +1084,10 @@ bool HexagonInstrInfo::expandPostRAPseudo(MachineInstr &MI) const {
   };
 
   switch (Opc) {
+    // Must survive until PreEmit hexagon-hmx-pairing expand. Expanding
+    // here (before post-RA sched) would recreate an act/wei interval.
+    case Hexagon::PS_hmx_actwei:
+      return false;
     case Hexagon::PS_call_instrprof_custom: {
       auto Op0 = MI.getOperand(0);
       assert(Op0.isGlobal() &&
@@ -4716,6 +4720,10 @@ bool HexagonInstrInfo::isHMXWeightMxmem(const MachineInstr &MI) const {
   case Hexagon::M8_mxmem_wei_sm:
     return true;
   }
+}
+
+bool HexagonInstrInfo::isHMXActWeiPseudo(const MachineInstr &MI) const {
+  return MI.getOpcode() == Hexagon::PS_hmx_actwei;
 }
 
 InstrStage::FuncUnits HexagonInstrInfo::getUnits(const MachineInstr &MI) const {

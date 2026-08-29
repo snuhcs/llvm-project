@@ -1,0 +1,66 @@
+# RUN: llc -mtriple=hexagon -mcpu=hexagonv75 -mattr=+hvxv75,+hvx-length128b,+hmx -run-pass=hexagon-merge-activate-weight -verify-machineinstrs %s -o - | FileCheck %s --check-prefix=GLUE
+# RUN: llc -mtriple=hexagon -mcpu=hexagonv75 -mattr=+hvxv75,+hvx-length128b,+hmx -run-pass=hexagon-merge-activate-weight -run-pass=hexagon-hmx-pairing -verify-machineinstrs %s -o - | FileCheck %s --check-prefix=EXPAND
+#
+# X-D: glue act+wei into PS_hmx_actwei in SSA (compare stays on the IV
+# vreg). Expand immediately before packetizer emits adjacent real mxmem.
+
+--- |
+  define void @hmx_k_loop_latch_ssa(ptr %a, ptr %w) {
+    ret void
+  }
+  define void @hmx_k_loop_latch_expand(ptr %a, ptr %w) {
+    ret void
+  }
+...
+
+---
+name: hmx_k_loop_latch_ssa
+tracksRegLiveness: true
+body: |
+  bb.0:
+    liveins: $r0, $r1, $r2, $r3, $r4
+    successors: %bb.0, %bb.1
+
+    %0:intregs = COPY $r0
+    %1:intregs = COPY $r1
+    %2:intregs = COPY $r2
+    %3:intregs = COPY $r3
+    %4:intregs = COPY $r4
+    M8_mxmem_blk_sm_act_hf %0, %1
+    %5:predregs = C2_cmpeqi %4, 7168
+    M8_mxmem_wei_hf %2, %3
+    J2_jumpf %5, %bb.0, implicit-def $pc
+    J2_jump %bb.1, implicit-def $pc
+
+  bb.1:
+    PS_jmpret $r31, implicit-def $pc
+...
+
+# GLUE-LABEL: name: hmx_k_loop_latch_ssa
+# Intervening compare stays on the trip IV (%4), not act Rt (%1).
+# GLUE: C2_cmpeqi %4, 7168
+# GLUE: PS_hmx_actwei %0, %1, %2, %3
+# GLUE-NOT: C2_cmpeqi %1
+# GLUE-NOT: M8_mxmem_blk_sm_act_hf
+# GLUE-NOT: M8_mxmem_wei_hf
+
+---
+name: hmx_k_loop_latch_expand
+tracksRegLiveness: true
+body: |
+  bb.0:
+    liveins: $r0, $r1, $r2, $r3
+
+    %0:intregs = COPY $r0
+    %1:intregs = COPY $r1
+    %2:intregs = COPY $r2
+    %3:intregs = COPY $r3
+    M8_mxmem_blk_sm_act_hf %0, %1
+    M8_mxmem_wei_hf %2, %3
+    PS_jmpret $r31, implicit-def $pc
+...
+
+# EXPAND-LABEL: name: hmx_k_loop_latch_expand
+# EXPAND: M8_mxmem_blk_sm_act_hf %0, %1
+# EXPAND-NEXT: M8_mxmem_wei_hf %2, %3
+# EXPAND-NOT: PS_hmx_actwei

@@ -261,6 +261,7 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeHexagonTarget() {
   initializeHexagonLoopIdiomRecognizeLegacyPassPass(PR);
   initializeHexagonNewValueJumpPass(PR);
   initializeHexagonOptAddrModePass(PR);
+  initializeHexagonMergeActivateWeightPass(PR);
   initializeHexagonHMXPairingPass(PR);
   initializeHexagonPacketizerPass(PR);
   initializeHexagonRDFOptPass(PR);
@@ -476,6 +477,8 @@ void HexagonPassConfig::addPreRegAlloc() {
   }
   if (TM->getOptLevel() >= CodeGenOptLevel::Default)
     addPass(&MachinePipelinerID);
+  // After SMS: one SSA MI so post-RA sched cannot split act/wei.
+  addPass(createHexagonMergeActivateWeight());
 }
 
 void HexagonPassConfig::addPostRegAlloc() {
@@ -515,7 +518,7 @@ void HexagonPassConfig::addPreEmitPass() {
       addPass(createHexagonGenMux());
   }
 
-  // Pair HMX activation/weight mxmem so they are adjacent for packetization.
+  // Expand PS_hmx_actwei immediately before packetizer.
   addPass(createHexagonHMXPairing());
   // Packetization is mandatory: it handles gather/scatter at all opt levels.
   addPass(createHexagonPacketizer(NoOpt));

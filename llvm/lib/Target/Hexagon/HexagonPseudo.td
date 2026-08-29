@@ -20,6 +20,16 @@ let PrintMethod = "printGlobalOperand" in {
   def globaladdressExt : Operand<i32>;
 }
 
+// One RA-atomic HMX act+wei pair. Glued pre-RA (SSA) so the post-RA
+// scheduler cannot put a k-loop latch between the two mxmem ops.
+// Expanded immediately before packetization. Opcode immediates are the
+// real M8_mxmem_* tablegen opcodes.
+let isPseudo = 1, isCodeGenOnly = 1, hasSideEffects = 1, mayLoad = 1,
+    mayStore = 1 in
+def PS_hmx_actwei : Pseudo<(outs),
+    (ins IntRegs:$RsA, IntRegs:$RtA, IntRegs:$RsW, IntRegs:$RtW,
+         u32_0Imm:$ActOpc, u32_0Imm:$WeiOpc), "">;
+
 let isPseudo = 1 in {
 let isCodeGenOnly = 0 in
 def A2_iconst : Pseudo<(outs IntRegs:$Rd32),

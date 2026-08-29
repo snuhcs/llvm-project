@@ -476,6 +476,7 @@ public:
   /// HMX mxmem: activation vs weight (same-packet pairing in packetizer).
   bool isHMXActivationMxmem(const MachineInstr &MI) const;
   bool isHMXWeightMxmem(const MachineInstr &MI) const;
+  bool isHMXActWeiPseudo(const MachineInstr &MI) const;
 
   MachineBasicBlock::instr_iterator expandVGatherPseudo(MachineInstr &MI) const;
 

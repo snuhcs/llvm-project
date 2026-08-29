@@ -67,8 +67,10 @@ entry:
 ; CHECK-LABEL: hmx_then_memcpy:
 ; CHECK:       activation.hf = mxmem({{r[0-9]+}},{{r[0-9]+}})
 ; CHECK:       weight.hf = mxmem({{r[0-9]+}},{{r[0-9]+}})
-; CHECK:       mxmem({{r[0-9]+}},{{r[0-9]+}}):after.hf = acc
-; CHECK-DAG:   r0 = r3
+; memcpy dst/src are %dst/%src (incoming r3/r4), not a stale HMX Rt.
+; SSA glue may emit `r0 = r3` or a combine into r1:0 (either side of drain).
+; CHECK-DAG:   combine(r4,r3)
+; CHECK-DAG:   mxmem({{r[0-9]+}},{{r[0-9]+}}):after.hf = acc
 ; CHECK:       call memcpy
 
 ; ---------------------------------------------------------------------------
