@@ -1788,11 +1788,10 @@ HexagonPacketizerList::addToPacket(MachineInstr &MI) {
     // now so the next instruction starts a fresh one. `endPacket`
     // bundles `[FirstMI, EndMI)`, so pass the position *after* wei so
     // wei is included in the bundle.
-    auto AfterWeight = std::next(NextIt);
-    if (AfterWeight == MBB->end())
-      endPacket(MBB, WeightMI);
-    else
-      endPacket(MBB, *AfterWeight);
+    // When the pair ends the block (the epilog MachinePipeliner leaves after
+    // a pipelined loop of pairs can hold just the last one), the bound is the
+    // block's end: passing the weight there bundled the activation alone.
+    endPacket(MBB, std::next(NextIt));
     return MII;
   }
 

@@ -1,0 +1,32 @@
+# RUN: llc -mtriple=hexagon -mcpu=hexagonv79 -mattr=+hvxv79,+hvx-length128b,+hmx -run-pass=hexagon-packetizer %s -o - | FileCheck %s
+#
+# An HMX activation and weight mxmem must be in one packet even when they are
+# the last two instructions of their block. MachinePipeliner leaves such a
+# block: the epilog of a pipelined loop of act/wei pairs can hold just the
+# last pair, falling through to the next block. The packetizer used to close
+# that packet at the weight (endPacket bundles [first, end)), so the bundle
+# held the activation alone and the weight went into the next packet; on the
+# device that pair's product was missing from the accumulator, with no error.
+
+---
+name: actwei_last_in_block
+tracksRegLiveness: true
+body: |
+  bb.0:
+    successors: %bb.1
+    liveins: $r0, $r1, $r2, $r3, $r31
+
+    M8_mxmem_blk_sm_act_hf $r0, $r1
+    M8_mxmem_wei_hf $r2, $r3
+
+  bb.1:
+    liveins: $r31
+
+    PS_jmpret $r31, implicit-def dead $pc
+...
+
+# CHECK-LABEL: name: actwei_last_in_block
+# CHECK:      BUNDLE
+# CHECK-NEXT:   M8_mxmem_blk_sm_act_hf
+# CHECK-NEXT:   M8_mxmem_wei_hf
+# CHECK-NEXT: }
