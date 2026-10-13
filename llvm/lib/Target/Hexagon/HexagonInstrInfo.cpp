@@ -102,6 +102,12 @@ static cl::opt<bool>
     UseDFAHazardRec("dfa-hazard-rec", cl::init(true), cl::Hidden,
                     cl::desc("Use the DFA based hazard recognizer."));
 
+static cl::opt<bool> PipelineHMXLoops(
+    "hexagon-pipeline-hmx-loops", cl::init(false), cl::Hidden,
+    cl::desc("Let MachinePipeliner pipeline a loop that holds an HMX "
+             "activation or weight mxmem. It can split a pair; for timing "
+             "comparisons only."));
+
 /// Constants for Hexagon instructions.
 const int Hexagon_MEMW_OFFSET_MAX = 4095;
 const int Hexagon_MEMW_OFFSET_MIN = -4096;
@@ -806,6 +812,16 @@ public:
 
 std::unique_ptr<TargetInstrInfo::PipelinerLoopInfo>
 HexagonInstrInfo::analyzeLoopForPipelining(MachineBasicBlock *LoopBB) const {
+  // An HMX activation and its weight must share a packet. MachinePipeliner
+  // runs before they are glued into PS_hmx_actwei and schedules them as two
+  // instructions, so it can put a pair's halves in different stages, where
+  // the glue (which pairs within one block) cannot join them again. Leave a
+  // loop that holds either one unpipelined.
+  if (!PipelineHMXLoops)
+    for (const MachineInstr &MI : *LoopBB)
+      if (isHMXActivationMxmem(MI) || isHMXWeightMxmem(MI))
+        return nullptr;
+
   // We really "analyze" only hardware loops right now.
   MachineBasicBlock::iterator I = LoopBB->getFirstTerminator();
 
