@@ -15,6 +15,7 @@
 #include "llvm/ADT/APInt.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/MapVector.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/Analysis/AliasAnalysis.h"
@@ -359,7 +360,11 @@ private:
   friend raw_ostream &operator<<(raw_ostream &OS, const ByteSpan::Block &B);
   friend raw_ostream &operator<<(raw_ostream &OS, const ByteSpan &BS);
 
-  std::map<Instruction *, AddrList> AddrGroups;
+  // Iterated to form the load and store groups. A MapVector keeps the order
+  // in which the groups were found; std::map<Instruction *, ...> iterated in
+  // allocation-address order, so the emitted code differed from run to run
+  // (as upstream 8f5b067dc321).
+  MapVector<Instruction *, AddrList> AddrGroups;
   const HexagonVectorCombine &HVC;
 };
 
@@ -909,9 +914,9 @@ auto AlignVectors::createAddressGroups() -> bool {
   // AddrGroups are formed.
 
   // Remove groups of size 1.
-  erase_if(AddrGroups, [](auto &G) { return G.second.size() == 1; });
+  AddrGroups.remove_if([](auto &G) { return G.second.size() == 1; });
   // Remove groups that don't use HVX types.
-  erase_if(AddrGroups, [&](auto &G) {
+  AddrGroups.remove_if([&](auto &G) {
     return llvm::none_of(
         G.second, [&](auto &I) { return HVC.HST.isTypeForHVX(I.ValTy); });
   });
@@ -1416,7 +1421,7 @@ auto AlignVectors::realignGroup(const MoveGroup &Move) const -> bool {
     });
   };
 
-  const AddrList &BaseInfos = AddrGroups.at(Move.Base);
+  const AddrList &BaseInfos = AddrGroups.find(Move.Base)->second;
 
   // Conceptually, there is a vector of N bytes covering the addresses
   // starting from the minimum offset (i.e. Base.Addr+Start). This vector
