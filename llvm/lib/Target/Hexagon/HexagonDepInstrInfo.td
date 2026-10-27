@@ -42194,7 +42194,7 @@ let hasSideEffects = 1;
 def M8_mxmem_sm_act_f8 : HInst<
 (outs),
 (ins IntRegs:$Rs32, IntRegs:$Rt32),
-"activation.hf = mxmem($Rs32,$Rt32):single",
+"activation.f8 = mxmem($Rs32,$Rt32):deep",
 tc_M8_mxmem_load, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-24} = 0b10010010;
 let Inst{23-21} = 0b000;
@@ -42208,7 +42208,7 @@ let hasSideEffects = 1;
 def M8_mxmem_blk_sm_act_f8 : HInst<
 (outs),
 (ins IntRegs:$Rs32, IntRegs:$Rt32),
-"activation.hf = mxmem($Rs32,$Rt32):dilate",
+"activation.f8 = mxmem($Rs32,$Rt32)",
 tc_M8_mxmem_load, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-24} = 0b10010010;
 let Inst{23-21} = 0b000;
@@ -42222,7 +42222,7 @@ let hasSideEffects = 1;
 def M8_mxmemu_blk_sm_act_f8 : HInst<
 (outs),
 (ins IntRegs:$Rs32, IntRegs:$Rt32),
-"activation.hf = mxmem($Rs32,$Rt32):deep",
+"activation.f8 = mxmem($Rs32,$Rt32):above",
 tc_M8_mxmem_load, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-24} = 0b10010010;
 let Inst{23-21} = 0b000;
@@ -42236,7 +42236,7 @@ let hasSideEffects = 1;
 def M8_mxmems_blk_sm_act_f8 : HInst<
 (outs),
 (ins IntRegs:$Rs32, IntRegs:$Rt32),
-"activation.hf = mxmem($Rs32,$Rt32)",
+"activation.f8 = mxmem($Rs32,$Rt32):single",
 tc_M8_mxmem_load, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-24} = 0b10010010;
 let Inst{23-21} = 0b000;
@@ -42250,7 +42250,7 @@ let hasSideEffects = 1;
 def M8_mxmemd_blk_sm_act_f8 : HInst<
 (outs),
 (ins IntRegs:$Rs32, IntRegs:$Rt32),
-"activation.hf = mxmem($Rs32,$Rt32):above",
+"activation.f8 = mxmem($Rs32,$Rt32):dilate",
 tc_M8_mxmem_load, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-24} = 0b10010010;
 let Inst{23-21} = 0b000;
@@ -43636,6 +43636,21 @@ let opNewValue = 0;
 let hasSideEffects = 1;
 }
 
+
+def M8_cvt_rs_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32),
+"cvt.f8 = acc($Rs32)",
+tc_M8_mx_cvt_acc, TypeCVI_MXMEM>, Enc_ecbcc8, Requires<[UseHMX]> {
+let Inst{31-21} = 0b10100110111;
+let Inst{13-8} = 0b011011;
+let Inst{7-0} = 0b00010000;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+let isSolo = 1;
+}
+
 def M8_mxmem : HInst<
 (outs),
 (ins IntRegs:$Rs32, IntRegs:$Rt32),
@@ -43694,6 +43709,35 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00011011;
+}
+
+
+def M8_mxmem_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"mxmem($Rs32,$Rt32).f8 = cvt",
+tc_M8_mxmem_cvt_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
+let Inst{31-21} = 0b10100110111;
+let Inst{13-13} = 0b0;
+let Inst{7-0} = 0b00011101;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+let isSolo = 1;
+}
+
+def M8_mxmem_deep_f8 : HInst<
+(outs),
+(ins IntRegs:$Rs32, IntRegs:$Rt32),
+"mxmem($Rs32,$Rt32):deep.f8 = cvt",
+tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
+let Inst{31-21} = 0b10100110111;
+let Inst{13-13} = 0b0;
+let Inst{7-0} = 0b00011110;
+let hasNewValue = 1;
+let opNewValue = 0;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxclracc : HInst<

@@ -1,0 +1,25 @@
+# RUN: rm -rf %t && mkdir -p %t/ar
+# RUN: llc -mtriple=hexagon -mcpu=hexagonv79 -mattr=+hvxv79,+hvx-length128b,+hmx \
+# RUN:     -filetype=obj -o %t/kernel.o %S/Inputs/hmx_matmul_32x32x32.ll
+# RUN: %hexagon-clang -mv79 -G0 -O2 -fpic -D__V_DYNAMIC__ \
+# RUN:     %hexagon-qurt-includes %hexagon-sdk-includes \
+# RUN:     -c -o %t/main.o %S/Inputs/hmx_matmul_main.c
+# RUN: cd %t/ar && %hexagon-ar x %hexagon-test-util sysmon_vtcm_mgr_client.o
+# RUN: %hexagon-clang -mv79 -G0 -fpic -shared \
+# RUN:     -o %t/hmx_matmul.so %t/main.o %t/kernel.o %t/ar/sysmon_vtcm_mgr_client.o
+# RUN: cp %S/Inputs/recipe_hf.txt %t/recipe.txt
+# RUN: cp %S/Inputs/identity_bias.bin %S/Inputs/tile_a_ah.f16 \
+# RUN:    %S/Inputs/tile_b_wh.f16 %S/Inputs/tile_c_ah_expected.f16 %t/
+# RUN: echo '%hexagon-iss/qtimer.so --csr_base=0xFC900000 --irq_p=3 --freq=19200000 --cnttid=1' > %t/q6ss.cfg
+# RUN: echo '%hexagon-iss/l2vic.so 32 0xFC910000' >> %t/q6ss.cfg
+# RUN: echo '%hexagon-qurt-model' > %t/osam.cfg
+# RUN: cd %t && %hexagon-sim -mv79na_1 --simulated_returnval --mhmx \
+# RUN:     --usefs %t --cosim_file %t/q6ss.cfg --l2tcm_base 0xd800 \
+# RUN:     --rtos %t/osam.cfg --plimit 100000000 \
+# RUN:     %hexagon-runelf -- \
+# RUN:     %hexagon-run-main stack_size=0x400000 -- \
+# RUN:     ./hmx_matmul.so | FileCheck %s
+#
+# REQUIRES: hexagon-registered-target, hexagon-sim-hmx
+#
+# CHECK: PASS 0x69f0

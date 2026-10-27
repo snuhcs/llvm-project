@@ -2310,8 +2310,9 @@ let Features = HMXV79.Features in {
   def M8_mxmemu_blk_sm_act_f8 : HexagonBuiltin<"void(void *, int)">;
 }
 
-// let Features = HMXV81.Features in {
-//   def M8_cvt_rs_f8: HexagonBuiltin<"void(void *)">;
-//   def M8_mxmem_deep_f8: HexagonBuiltin<"void(void *, int)">;
-//   def M8_mxmem_f8: HexagonBuiltin<"void(void *, int)">;
-// }
+let Features = HMXV79.Features in {
+  // V81 f8 drain encodings; exposed under HMXV79 like the f8 act/wei builtins.
+  def M8_cvt_rs_f8: HexagonBuiltin<"void(int)">;
+  def M8_mxmem_deep_f8: HexagonBuiltin<"void(void *, int)">;
+  def M8_mxmem_f8: HexagonBuiltin<"void(void *, int)">;
+}

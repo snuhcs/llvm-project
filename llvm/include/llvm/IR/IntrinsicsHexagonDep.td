@@ -7272,3 +7272,13 @@ Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmems_wei_f8", [IntrArgMemOnly]>;
 def int_hexagon_M8_mxmemu_blk_sm_act_f8 :
 Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmemu_blk_sm_act_f8", [IntrArgMemOnly]>;
 
+// HMX V81 f8 drain (cvt.f8=acc + mxmem.f8=cvt).
+def int_hexagon_M8_cvt_rs_f8 :
+Hexagon__i32_Intrinsic<"HEXAGON_M8_cvt_rs_f8", [IntrHasSideEffects]>;
+
+def int_hexagon_M8_mxmem_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_f8", [IntrWriteMem]>;
+
+def int_hexagon_M8_mxmem_deep_f8 :
+Hexagon__ptri32_Intrinsic<"HEXAGON_M8_mxmem_deep_f8", [IntrWriteMem]>;
+

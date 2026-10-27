@@ -646,4 +646,12 @@ let Predicates = [UseHVXV79, UseHMX] in {
   defm : T_mxmem_load_pat<M8_mxmemu_blk_sm_act_f8, int_hexagon_M8_mxmemu_blk_sm_act_f8>;  // activation.f8=mxmem(Rs32,Rt32):above
 }
 
+// 81 — f8 drain (cvt.f8=acc + mxmem.f8=cvt). Encodings from Tools 19.0.04
+// -mhmx asm; gated on UseHVXV79 like the v79 f8 act/wei ops (no UseHVXV81 yet).
+let Predicates = [UseHVXV79, UseHMX] in {
+  defm : T_mx_cvt_acc_pat<M8_cvt_rs_f8, int_hexagon_M8_cvt_rs_f8>;  // cvt.f8=acc(Rs32)
+  defm : T_mxmem_cvt_store_pat<M8_mxmem_f8, int_hexagon_M8_mxmem_f8>;  // mxmem(Rs32,Rt32).f8=cvt
+  defm : T_mxmem_store_pat<M8_mxmem_deep_f8, int_hexagon_M8_mxmem_deep_f8>;  // mxmem(Rs32,Rt32):deep.f8=cvt
+}
+
 include "HexagonDepMapAsm2Intrin.td"
