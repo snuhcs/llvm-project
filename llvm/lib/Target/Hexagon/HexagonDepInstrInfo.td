@@ -43163,6 +43163,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00001010;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvta_sat_uh_r : HInst<
@@ -43173,6 +43175,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00001110;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvta_uh : HInst<
@@ -43183,6 +43187,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00001011;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvta_uh_r : HInst<
@@ -43193,6 +43199,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00001111;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtb_sat_uh : HInst<
@@ -43203,6 +43211,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00000010;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtb_sat_uh_r : HInst<
@@ -43213,6 +43223,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00000110;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtb_uh : HInst<
@@ -43223,6 +43235,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00000011;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtb_uh_r : HInst<
@@ -43233,6 +43247,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00000111;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtl_dm_sat_ub : HInst<
@@ -43243,6 +43259,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00000001;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtl_dm_sat_ub_r : HInst<
@@ -43253,6 +43271,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00001001;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtl_dm_ub : HInst<
@@ -43263,6 +43283,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00000011;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtl_dm_ub_r : HInst<
@@ -43273,6 +43295,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00001011;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtl_sat_hf : HInst<
@@ -43323,6 +43347,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00000000;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtl_sat_ub_r : HInst<
@@ -43333,6 +43359,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00001000;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtl_ub : HInst<
@@ -43343,6 +43371,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00000010;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtl_ub_r : HInst<
@@ -43353,6 +43383,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00001010;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtr_dm_sat_ub : HInst<
@@ -43363,6 +43395,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00000101;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtr_dm_sat_ub_r : HInst<
@@ -43373,6 +43407,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00001101;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtr_dm_ub : HInst<
@@ -43383,6 +43419,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00000111;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtr_dm_ub_r : HInst<
@@ -43393,6 +43431,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00001111;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtr_sat_hf : HInst<
@@ -43445,6 +43485,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00000100;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtr_sat_ub_r : HInst<
@@ -43455,6 +43497,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00001100;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtr_ub : HInst<
@@ -43465,6 +43509,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00000110;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtr_ub_r : HInst<
@@ -43475,6 +43521,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b0;
 let Inst{7-0} = 0b00001110;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvta_sat_uh2x2 : HInst<
@@ -43485,6 +43533,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00011010;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvta_sat_uh2x2_r : HInst<
@@ -43495,6 +43545,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00011110;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvta_uh2x2 : HInst<
@@ -43505,6 +43557,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00011011;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvta_uh2x2_r : HInst<
@@ -43515,6 +43569,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00011111;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtb_sat_uh2x2 : HInst<
@@ -43525,6 +43581,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00010010;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtb_sat_uh2x2_r : HInst<
@@ -43535,6 +43593,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00010110;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtb_uh2x2 : HInst<
@@ -43545,6 +43605,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00010011;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxcvtb_uh2x2_r : HInst<
@@ -43555,6 +43617,8 @@ tc_M8_mxmem_store, TypeCVI_MXMEM>, Enc_ca3887, Requires<[UseHMX]> {
 let Inst{31-21} = 0b10100110111;
 let Inst{13-13} = 0b1;
 let Inst{7-0} = 0b00010111;
+let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_cvt_rs_hf : HInst<
@@ -43582,6 +43646,7 @@ let Inst{7-0} = 0b00010000;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_cvt_rs_ub_sc0 : HInst<
@@ -43595,6 +43660,7 @@ let Inst{7-0} = 0b00010000;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_cvt_rs_ub_sc1 : HInst<
@@ -43608,6 +43674,7 @@ let Inst{7-0} = 0b00010000;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_cvt_rs_uh_2x1 : HInst<
@@ -43621,6 +43688,7 @@ let Inst{7-0} = 0b00010000;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_cvt_rs_uh_2x2 : HInst<
@@ -43634,6 +43702,7 @@ let Inst{7-0} = 0b00010000;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 
@@ -43676,6 +43745,7 @@ let Inst{7-0} = 0b00011010;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxmem_cm : HInst<
@@ -43689,6 +43759,7 @@ let Inst{7-0} = 0b00011001;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxmem_cm_deep: HInst<
@@ -43750,6 +43821,7 @@ let Inst{13-0} = 0b00000000010001;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxclracc_hf : HInst<
@@ -43775,6 +43847,7 @@ let Inst{13-0} = 0b00000000010100;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxswap_hf : HInst<
@@ -43787,6 +43860,7 @@ let Inst{13-0} = 0b00000000010101;
 let hasNewValue = 1;
 let opNewValue = 0;
 let hasSideEffects = 1;
+let isSolo = 1;
 }
 
 def M8_mxaccshl : HInst<

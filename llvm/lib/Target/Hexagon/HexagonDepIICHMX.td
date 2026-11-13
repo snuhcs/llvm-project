@@ -1,4 +1,7 @@
 def tc_M8_mx_acc_control : InstrItinClass;
+// The activation/weight pair consumes the two memory issue slots. Do not
+// reserve the singleton HVX CVI_LD pipe for each half: that makes the required
+// pair impossible to reserve, even in an otherwise empty packet.
 def tc_M8_mxmem_load : InstrItinClass;
 def tc_M8_mxmem_store : InstrItinClass;
 def tc_M8_mxmem_bias_load : InstrItinClass;
@@ -11,8 +14,7 @@ class DepHMXItinV69 {
     InstrItinData <tc_M8_mx_acc_control,
       [InstrStage<1, [SLOT0]>], [], []>,
     InstrItinData <tc_M8_mxmem_load,
-      [InstrStage<1, [SLOT0, SLOT1], 0>,
-       InstrStage<1, [CVI_LD]>], [1, 2], 
+      [InstrStage<1, [SLOT0, SLOT1]>], [1, 2],
        [Hex_FWD, Hex_FWD]>,
     InstrItinData <tc_M8_mxmem_store,
       [InstrStage<1, [SLOT0, SLOT1], 0>,
@@ -34,8 +36,7 @@ class DepHMXItinV71 {
     InstrItinData <tc_M8_mx_acc_control,
       [InstrStage<1, [SLOT0]>], [], []>,
     InstrItinData <tc_M8_mxmem_load,
-      [InstrStage<1, [SLOT0, SLOT1], 0>,
-       InstrStage<1, [CVI_LD]>], [1, 2], 
+      [InstrStage<1, [SLOT0, SLOT1]>], [1, 2],
        [Hex_FWD, Hex_FWD]>,
     InstrItinData <tc_M8_mxmem_store,
       [InstrStage<1, [SLOT0, SLOT1], 0>,
@@ -64,8 +65,7 @@ class DepHMXItinV73 {
     InstrItinData <tc_M8_mx_acc_control,
       [InstrStage<1, [SLOT0]>], [], []>,
     InstrItinData <tc_M8_mxmem_load,
-      [InstrStage<1, [SLOT0, SLOT1], 0>,
-       InstrStage<1, [CVI_LD]>], [1, 2], 
+      [InstrStage<1, [SLOT0, SLOT1]>], [1, 2],
        [Hex_FWD, Hex_FWD]>,
     InstrItinData <tc_M8_mxmem_store,
       [InstrStage<1, [SLOT0, SLOT1], 0>,
@@ -94,8 +94,7 @@ class DepHMXItinV75 {
     InstrItinData <tc_M8_mx_acc_control,
       [InstrStage<1, [SLOT0]>], [], []>,
     InstrItinData <tc_M8_mxmem_load,
-      [InstrStage<1, [SLOT0, SLOT1], 0>,
-       InstrStage<1, [CVI_LD]>], [1, 2], 
+      [InstrStage<1, [SLOT0, SLOT1]>], [1, 2],
        [Hex_FWD, Hex_FWD]>,
     InstrItinData <tc_M8_mxmem_store,
       [InstrStage<1, [SLOT0, SLOT1], 0>,
@@ -124,8 +123,7 @@ class DepHMXItinV79 {
     InstrItinData <tc_M8_mx_acc_control,
       [InstrStage<1, [SLOT0]>], [], []>,
     InstrItinData <tc_M8_mxmem_load,
-      [InstrStage<1, [SLOT0, SLOT1], 0>,
-       InstrStage<1, [CVI_LD]>], [1, 2], 
+      [InstrStage<1, [SLOT0, SLOT1]>], [1, 2],
        [Hex_FWD, Hex_FWD]>,
     InstrItinData <tc_M8_mxmem_store,
       [InstrStage<1, [SLOT0, SLOT1], 0>,
