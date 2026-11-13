@@ -1,0 +1,42 @@
+# RUN: llc -mtriple=hexagon -mcpu=hexagonv79 -mattr=+hvxv79,+hvx-length128b,+hvx-qfloat -run-pass=postrapseudos -verify-machineinstrs %s -o - | FileCheck %s
+
+# Only generated COPY changes; an explicit raw vassign remains raw.
+# CHECK-LABEL: name: qf_copy_single
+# CHECK: $v2 = V6_vmerge_qf $v0, $v0
+# CHECK: $v3 = V6_vassign $v0
+# CHECK-LABEL: name: qf_copy_pair
+# CHECK: $v2 = V6_vmerge_qf $v0, $v0
+# CHECK: $v3 = V6_vmerge_qf $v1, $v1
+
+# WR0 hardware destination order is physicalV1(low),V0(high), despite its
+# TableGen subregister indices. Save the old low value before the swap.
+# CHECK-LABEL: name: qf_copy_reverse_destination
+# CHECK: $v31 = V6_vmerge_qf $v0, $v0
+# CHECK: $v0 = V6_vmerge_qf $v1, $v1
+# CHECK: $v1 = V6_vmerge_qf $v31, killed $v31
+
+---
+name: qf_copy_single
+tracksRegLiveness: true
+body: |
+  bb.0:
+    liveins: $v0
+    $v2 = COPY $v0
+    $v3 = V6_vassign $v0
+...
+---
+name: qf_copy_pair
+tracksRegLiveness: true
+body: |
+  bb.0:
+    liveins: $w0
+    $w1 = COPY $w0
+...
+---
+name: qf_copy_reverse_destination
+tracksRegLiveness: true
+body: |
+  bb.0:
+    liveins: $w0
+    $wr0 = COPY $w0
+...

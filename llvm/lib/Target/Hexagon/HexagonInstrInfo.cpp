@@ -958,6 +958,11 @@ void HexagonInstrInfo::copyPhysReg(MachineBasicBlock &MBB,
     if (Subtarget.useHVXV79Ops() && Subtarget.useHVXQFloatOps()) {
       Register DstLo = HRI.getSubReg(DestReg, Hexagon::vsub_lo);
       Register DstHi = HRI.getSubReg(DestReg, Hexagon::vsub_hi);
+      // WR aliases have odd destination encodings: vcombine writes its low
+      // input to the odd physical register. TableGen's vsub_lo/vsub_hi remain
+      // in the normal physical order, so account for the encoding explicitly.
+      if (HRI.getEncodingValue(DestReg) & 1)
+        std::swap(DstLo, DstHi);
       // Reversed pair aliases can turn a pair COPY into a swap.  Preserve
       // the low source before either destination overwrites the other half.
       bool CrossOverlap = DstLo == SrcHi || DstHi == SrcLo;

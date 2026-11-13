@@ -35,10 +35,12 @@ Current evidence:
 
 Known limits before wider adoption:
 
-- Reversed WR destination encoding is not yet handled correctly. TableGen
-  subregister order differs from its hardware destination order. These aliases
-  are already excluded from normal register allocation, but direct COPY MIR
-  requires a separate fix and regression.
+- Reversed WR destination encoding has a dedicated state-preserving swap
+  lowering and host regression. Its device state/permutation gate is pending.
+  Source WR logical ordering remains unsupported. These aliases are already
+  excluded from normal register allocation; direct-MIR source WR support must
+  be handled separately. Direct-MIR pair values involving reserved V31 are
+  also outside the prototype's supported operand set.
 - The VLA test proves only that a dominating PS_aligna provides the same base
   for primary and sideband slots. It does not prove general AP lifetime safety.
 - Full FP16/integer device regression, 64-byte V79 transport coverage, and full
