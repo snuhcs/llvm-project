@@ -27,9 +27,10 @@ Current evidence:
 - This compares newly compiled retained and pressure paths; cross-version
   preservation of the old retained path is a separate pending control.
 - `qfloat-state-spill-frame.mir` verifies single/pair transport, non-kill source
-  restoration, mixed-class frame reuse, a dominating-aligna VLA case, and
-  clamped unaligned stack access. QF/no-QF variants pass machine verification
-  and FileCheck.
+  restoration, mixed-class frame reuse, dominating-aligna and no-aligna VLA
+  cases, and clamped unaligned stack access. The sideband requests no stronger
+  alignment than its primary data, preventing a newly introduced AP requirement
+  after RA. QF/no-QF variants pass machine verification and FileCheck.
 - Ten existing HF multiplication, masked-store, HMX packetization, stack, and
   scalar host checks pass. Device HF/HMX/integer regressions remain pending.
 
@@ -41,8 +42,9 @@ Known limits before wider adoption:
   excluded from normal register allocation; direct-MIR source WR support must
   be handled separately. Direct-MIR pair values involving reserved V31 are
   also outside the prototype's supported operand set.
-- The VLA test proves only that a dominating PS_aligna provides the same base
-  for primary and sideband slots. It does not prove general AP lifetime safety.
+- VLA cases prove matching spill bases with a dominating PS_aligna and that an
+  ABI-aligned primary without PS_aligna no longer acquires a missing AP through
+  new state storage. They do not prove every existing AP lifetime path safe.
 - Full FP16/integer device regression, 64-byte V79 transport coverage, and full
   Qwen correctness are not established. The existing original reference and its
   fullbody385 failure status are unchanged.

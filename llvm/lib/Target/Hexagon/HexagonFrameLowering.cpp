@@ -2074,7 +2074,11 @@ static bool expandQFSpill(MachineBasicBlock &B,
     // Give state the same spill-object classification as its primary data,
     // including dynamic-allocation frame policies. Do not create an ordinary
     // aligned local with a different addressing/lifetime policy.
-    Entry->second = MFI.CreateSpillStackObject(MFI.getObjectSize(FI), VecAlign);
+    // Do not introduce a new stack realignment/AP requirement after RA. A
+    // less-aligned primary already uses unaligned VMEM; its state can do so
+    // too. In particular, VLA functions may have no PS_aligna/AP at all.
+    Entry->second = MFI.CreateSpillStackObject(
+        MFI.getObjectSize(FI), std::min(VecAlign, MFI.getObjectAlign(FI)));
   int ExtFI = Entry->second;
   Register Value = MI.getOperand(Store ? 2 : 0).getReg();
   bool Kill = Store && MI.getOperand(2).isKill();

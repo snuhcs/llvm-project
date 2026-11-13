@@ -41,6 +41,16 @@
 # CHECK: V6_get_qfext $v0,
 # CHECK: $v1 = V6_vmerge_qf $v31, $v1
 
+# New state storage must not introduce an AP/realignment requirement after
+# register allocation when the original spill only needs ABI alignment.
+# CHECK-LABEL: name: qf_vla_no_aligna
+# CHECK-NOT: $noreg
+# CHECK: V6_vS32Ub_ai $r30,
+# CHECK: V6_vS32Ub_ai $r30,
+# CHECK: V6_vL32Ub_ai $r30,
+# CHECK: V6_vL32Ub_ai $r30,
+# CHECK-NOT: $noreg
+
 # NOQF: name: qf_single
 # NOQF-NOT: V6_get_qfext
 # NOQF-NOT: V6_set_qfext
@@ -57,6 +67,11 @@
   }
   define void @qf_unaligned() #0 { ret void }
   define void @qf_mixed_slot() { ret void }
+  define void @qf_vla_no_aligna(i32 %n) {
+    %p = alloca i8, i32 %n, align 1
+    call void @use(ptr %p)
+    ret void
+  }
   declare void @use(ptr)
   attributes #0 = { "no-realign-stack" }
 ...
@@ -118,4 +133,16 @@ body: |
     $v1 = PS_vloadrv_ai %stack.0, 0
     S2_storeri_io %stack.0, 0, $r0
     $r1 = L2_loadri_io %stack.0, 0
+...
+---
+name: qf_vla_no_aligna
+tracksRegLiveness: true
+stack:
+  - { id: 0, type: variable-sized, offset: 0, alignment: 1 }
+  - { id: 1, type: spill-slot, size: 128, alignment: 8 }
+body: |
+  bb.0:
+    liveins: $v0
+    PS_vstorerv_ai %stack.1, 0, $v0
+    $v1 = PS_vloadrv_ai %stack.1, 0
 ...
