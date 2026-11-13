@@ -1749,6 +1749,22 @@ HexagonPacketizerList::addToPacket(MachineInstr &MI) {
       HII->isHMXWeightMxmem(*NextIt)) {
     MachineInstr &WeightMI = *NextIt;
     MII = NextIt;
+    // The packetizer checked MI against the current packet, but WeightMI
+    // bypasses that check when the mandatory pair is inserted here. HMX
+    // operands do not have a .new forwarding form: a register definition in
+    // this packet must be committed before the weight instruction reads it.
+    // Also exclude overlapping definitions. modifiesRegister checks physical
+    // sub/super-register aliases and register-mask clobbers, including implicit
+    // operands. Read-before-write anti-dependencies remain legal in a packet.
+    bool WeightRegConflict = false;
+    for (const MachineOperand &MO : WeightMI.operands()) {
+      if (!MO.isReg() || !MO.getReg() || (!MO.readsReg() && !MO.isDef()))
+        continue;
+      for (const MachineInstr *PacketMI : CurrentPacketMIs)
+        WeightRegConflict |= PacketMI->modifiesRegister(MO.getReg(), HRI);
+    }
+    if (WeightRegConflict)
+      endPacket(MBB, MI);
     ResourceTracker->reserveResources(MI);
     if (ExtMI)
       Good = tryAllocateResourcesForConstExt(true);
