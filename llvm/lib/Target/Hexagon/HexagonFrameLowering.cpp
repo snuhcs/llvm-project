@@ -1818,7 +1818,10 @@ bool HexagonFrameLowering::expandStoreVecPred(MachineBasicBlock &B,
   //   TmpR1 = V6_vandqrt Qx, TmpR0
   //   store FI, 0, TmpR1
   Register TmpR0 = MRI.createVirtualRegister(&Hexagon::IntRegsRegClass);
-  Register TmpR1 = MRI.createVirtualRegister(RC);
+  const auto &HST = B.getParent()->getSubtarget<HexagonSubtarget>();
+  bool UseQFScratch = HST.useHVXV79Ops() && HST.useHVXQFloatOps();
+  Register TmpR1 = UseQFScratch ? Register(Hexagon::V31)
+                              : MRI.createVirtualRegister(RC);
 
   BuildMI(B, It, DL, HII.get(Hexagon::A2_tfrsi), TmpR0)
     .addImm(0x01010101);
@@ -1832,7 +1835,8 @@ bool HexagonFrameLowering::expandStoreVecPred(MachineBasicBlock &B,
   expandStoreVec(B, std::prev(It), MRI, HII, NewRegs);
 
   NewRegs.push_back(TmpR0);
-  NewRegs.push_back(TmpR1);
+  if (!UseQFScratch)
+    NewRegs.push_back(TmpR1);
   B.erase(It);
   return true;
 }
@@ -1853,7 +1857,10 @@ bool HexagonFrameLowering::expandLoadVecPred(MachineBasicBlock &B,
   // TmpR1 = load FI, 0
   // DstR = V6_vandvrt TmpR1, TmpR0
   Register TmpR0 = MRI.createVirtualRegister(&Hexagon::IntRegsRegClass);
-  Register TmpR1 = MRI.createVirtualRegister(RC);
+  const auto &HST = B.getParent()->getSubtarget<HexagonSubtarget>();
+  bool UseQFScratch = HST.useHVXV79Ops() && HST.useHVXQFloatOps();
+  Register TmpR1 = UseQFScratch ? Register(Hexagon::V31)
+                              : MRI.createVirtualRegister(RC);
 
   BuildMI(B, It, DL, HII.get(Hexagon::A2_tfrsi), TmpR0)
     .addImm(0x01010101);
@@ -1867,7 +1874,8 @@ bool HexagonFrameLowering::expandLoadVecPred(MachineBasicBlock &B,
     .addReg(TmpR0, RegState::Kill);
 
   NewRegs.push_back(TmpR0);
-  NewRegs.push_back(TmpR1);
+  if (!UseQFScratch)
+    NewRegs.push_back(TmpR1);
   B.erase(It);
   return true;
 }
@@ -2029,9 +2037,126 @@ bool HexagonFrameLowering::expandLoadVec(MachineBasicBlock &B,
   return true;
 }
 
+// Expand compiler-generated HVX spill pseudos before frame layout.  The
+// primary frame index is already the post-StackSlotColoring index here.  Each
+// vector-sized data segment has a disjoint vector-sized extended-bit segment.
+// Explicit raw VMEM instructions/intrinsics never enter this path.
+static bool expandQFSpill(MachineBasicBlock &B,
+                          MachineBasicBlock::iterator It,
+                          const HexagonInstrInfo &HII,
+                          DenseMap<int, int> &SidebandFIs,
+                          SmallVectorImpl<Register> &NewRegs) {
+  MachineInstr &MI = *It;
+  unsigned Opc = MI.getOpcode();
+  bool Store = Opc == Hexagon::PS_vstorerv_ai ||
+               Opc == Hexagon::PS_vstorerw_ai;
+  bool Pair = Opc == Hexagon::PS_vstorerw_ai ||
+              Opc == Hexagon::PS_vloadrw_ai;
+  unsigned BaseOp = Store ? 0 : 1;
+  if (!MI.getOperand(BaseOp).isFI())
+    return false;
+
+  MachineFunction &MF = *B.getParent();
+  auto &MFI = MF.getFrameInfo();
+  auto &MRI = MF.getRegInfo();
+  const auto &HRI = *MF.getSubtarget<HexagonSubtarget>().getRegisterInfo();
+  unsigned VL = HRI.getSpillSize(Hexagon::HvxVRRegClass);
+  Align VecAlign = HRI.getSpillAlign(Hexagon::HvxVRRegClass);
+  int FI = MI.getOperand(BaseOp).getIndex();
+  int BaseOffset = MI.getOperand(BaseOp + 1).getImm();
+  unsigned Parts = Pair ? 2 : 1;
+  if (BaseOffset < 0 || uint64_t(BaseOffset) + Parts * VL >
+                            uint64_t(MFI.getObjectSize(FI)))
+    report_fatal_error("QF spill exceeds its data frame object");
+
+  auto [Entry, Inserted] = SidebandFIs.try_emplace(FI, -1);
+  if (Inserted)
+    // Give state the same spill-object classification as its primary data,
+    // including dynamic-allocation frame policies. Do not create an ordinary
+    // aligned local with a different addressing/lifetime policy.
+    Entry->second = MFI.CreateSpillStackObject(MFI.getObjectSize(FI), VecAlign);
+  int ExtFI = Entry->second;
+  Register Value = MI.getOperand(Store ? 2 : 0).getReg();
+  bool Kill = Store && MI.getOperand(2).isKill();
+  bool Undef = Store && MI.getOperand(2).isUndef();
+  DebugLoc DL = MI.getDebugLoc();
+  Register Mask = MRI.createVirtualRegister(&Hexagon::IntRegsRegClass);
+  NewRegs.push_back(Mask);
+  BuildMI(B, It, DL, HII.get(Hexagon::A2_tfrsi), Mask).addImm(0x01010101);
+
+  LivePhysRegs Live(HRI);
+  if (Store && Pair) {
+    Live.addLiveIns(B);
+    SmallVector<std::pair<MCPhysReg, const MachineOperand *>, 2> Clobbers;
+    for (auto I = B.begin(); I != It; ++I) {
+      Clobbers.clear();
+      Live.stepForward(*I, Clobbers);
+    }
+  }
+
+  auto Memory = [&](int Index, int Offset, MachineMemOperand::Flags Flags) {
+    Align A = commonAlignment(MFI.getObjectAlign(Index), Offset);
+    return MF.getMachineMemOperand(
+        MachinePointerInfo::getFixedStack(MF, Index, Offset), Flags, VL, A);
+  };
+  for (unsigned Part = 0; Part != Parts; ++Part) {
+    Register Reg = Pair ? Register(HRI.getSubReg(
+                              Value, Part == 0 ? Hexagon::vsub_lo
+                                               : Hexagon::vsub_hi))
+                        : Value;
+    if (Store && Pair && !Live.contains(Reg))
+      continue;
+    assert(Reg != Hexagon::V31 && "QF scratch allocated as a spill value");
+    int Offset = BaseOffset + Part * VL;
+    bool Aligned = commonAlignment(MFI.getObjectAlign(FI), Offset) >= VecAlign;
+    unsigned Ld = Aligned ? Hexagon::V6_vL32b_ai : Hexagon::V6_vL32Ub_ai;
+    unsigned St = Aligned ? Hexagon::V6_vS32b_ai : Hexagon::V6_vS32Ub_ai;
+    bool ExtAligned =
+        commonAlignment(MFI.getObjectAlign(ExtFI), Offset) >= VecAlign;
+    unsigned ExtLd = ExtAligned ? Hexagon::V6_vL32b_ai : Hexagon::V6_vL32Ub_ai;
+    unsigned ExtSt = ExtAligned ? Hexagon::V6_vS32b_ai : Hexagon::V6_vS32Ub_ai;
+    unsigned UndefFlag = getUndefRegState(Undef);
+    if (Store) {
+      BuildMI(B, It, DL, HII.get(Hexagon::V6_get_qfext), Hexagon::V31)
+          .addReg(Reg, UndefFlag).addReg(Mask);
+      BuildMI(B, It, DL, HII.get(ExtSt))
+          .addFrameIndex(ExtFI).addImm(Offset).addReg(Hexagon::V31)
+          .addMemOperand(Memory(ExtFI, Offset, MachineMemOperand::MOStore));
+      BuildMI(B, It, DL, HII.get(St))
+          .addFrameIndex(FI).addImm(Offset)
+          .addReg(Reg, getKillRegState(Kill) | UndefFlag)
+          .addMemOperand(Memory(FI, Offset, MachineMemOperand::MOStore));
+      // Conservatively retain a live source's full state as well as its data.
+      // This is not an SF conversion and introduces no rounding boundary.
+      if (!Kill && !Undef) {
+        BuildMI(B, It, DL, HII.get(Hexagon::V6_set_qfext), Hexagon::V31)
+            .addReg(Hexagon::V31).addReg(Mask);
+        BuildMI(B, It, DL, HII.get(Hexagon::V6_vmerge_qf), Reg)
+            .addReg(Hexagon::V31).addReg(Reg);
+      }
+    } else {
+      BuildMI(B, It, DL, HII.get(Ld), Reg)
+          .addFrameIndex(FI).addImm(Offset)
+          .addMemOperand(Memory(FI, Offset, MachineMemOperand::MOLoad));
+      BuildMI(B, It, DL, HII.get(ExtLd), Hexagon::V31)
+          .addFrameIndex(ExtFI).addImm(Offset)
+          .addMemOperand(Memory(ExtFI, Offset, MachineMemOperand::MOLoad));
+      BuildMI(B, It, DL, HII.get(Hexagon::V6_set_qfext), Hexagon::V31)
+          .addReg(Hexagon::V31).addReg(Mask);
+      BuildMI(B, It, DL, HII.get(Hexagon::V6_vmerge_qf), Reg)
+          .addReg(Hexagon::V31).addReg(Reg);
+    }
+  }
+  B.erase(It);
+  return true;
+}
+
 bool HexagonFrameLowering::expandSpillMacros(MachineFunction &MF,
       SmallVectorImpl<Register> &NewRegs) const {
   auto &HII = *MF.getSubtarget<HexagonSubtarget>().getInstrInfo();
+  const auto &HST = MF.getSubtarget<HexagonSubtarget>();
+  bool PreserveQF = HST.useHVXV79Ops() && HST.useHVXQFloatOps();
+  DenseMap<int, int> SidebandFIs;
   MachineRegisterInfo &MRI = MF.getRegInfo();
   bool Changed = false;
 
@@ -2042,6 +2167,13 @@ bool HexagonFrameLowering::expandSpillMacros(MachineFunction &MF,
       MachineInstr *MI = &*I;
       NextI = std::next(I);
       unsigned Opc = MI->getOpcode();
+
+      if (PreserveQF &&
+          (Opc == Hexagon::PS_vstorerv_ai || Opc == Hexagon::PS_vloadrv_ai ||
+           Opc == Hexagon::PS_vstorerw_ai || Opc == Hexagon::PS_vloadrw_ai)) {
+        Changed |= expandQFSpill(B, I, HII, SidebandFIs, NewRegs);
+        continue;
+      }
 
       switch (Opc) {
         case TargetOpcode::COPY:
@@ -2264,6 +2396,14 @@ void HexagonFrameLowering::optimizeSpillSlots(MachineFunction &MF,
             Bad = true;
           else
             SI.RC = RC;
+          // Do not turn protected state/data transport back into late HVX
+          // temporaries: scavenging one of those could recursively spill a
+          // different live QF value after this expansion has already run.
+          if (!Bad && HST.useHVXV79Ops() && HST.useHVXQFloatOps() &&
+              (Hexagon::HvxVRRegClass.hasSubClassEq(RC) ||
+               Hexagon::HvxWRRegClass.hasSubClassEq(RC) ||
+               Hexagon::HvxQRRegClass.hasSubClassEq(RC)))
+            Bad = true;
         }
         if (!Bad) {
           // Check sizes.

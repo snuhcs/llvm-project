@@ -934,6 +934,16 @@ void HexagonInstrInfo::copyPhysReg(MachineBasicBlock &MBB,
     return;
   }
   if (Hexagon::HvxVRRegClass.contains(SrcReg, DestReg)) {
+    // V79 QF values include extended register state.  A plain vassign
+    // preserves only the data bits, whereas a compiler-generated COPY must
+    // preserve the complete value.  Explicit vassign intrinsics still lower
+    // to their original instruction.
+    if (Subtarget.useHVXV79Ops() && Subtarget.useHVXQFloatOps()) {
+      BuildMI(MBB, I, DL, get(Hexagon::V6_vmerge_qf), DestReg)
+          .addReg(SrcReg)
+          .addReg(SrcReg, KillFlag);
+      return;
+    }
     BuildMI(MBB, I, DL, get(Hexagon::V6_vassign), DestReg).
       addReg(SrcReg, KillFlag);
     return;
@@ -945,6 +955,35 @@ void HexagonInstrInfo::copyPhysReg(MachineBasicBlock &MBB,
     Register SrcHi = HRI.getSubReg(SrcReg, Hexagon::vsub_hi);
     unsigned UndefLo = getUndefRegState(!LiveAtMI.contains(SrcLo));
     unsigned UndefHi = getUndefRegState(!LiveAtMI.contains(SrcHi));
+    if (Subtarget.useHVXV79Ops() && Subtarget.useHVXQFloatOps()) {
+      Register DstLo = HRI.getSubReg(DestReg, Hexagon::vsub_lo);
+      Register DstHi = HRI.getSubReg(DestReg, Hexagon::vsub_hi);
+      // Reversed pair aliases can turn a pair COPY into a swap.  Preserve
+      // the low source before either destination overwrites the other half.
+      bool CrossOverlap = DstLo == SrcHi || DstHi == SrcLo;
+      if (CrossOverlap) {
+        assert(SrcLo != Hexagon::V31 && SrcHi != Hexagon::V31 &&
+               DstLo != Hexagon::V31 && DstHi != Hexagon::V31 &&
+               "reserved QF scratch used in a pair COPY");
+        BuildMI(MBB, I, DL, get(Hexagon::V6_vmerge_qf), Hexagon::V31)
+            .addReg(SrcLo, UndefLo)
+            .addReg(SrcLo, KillFlag | UndefLo);
+        BuildMI(MBB, I, DL, get(Hexagon::V6_vmerge_qf), DstHi)
+            .addReg(SrcHi, UndefHi)
+            .addReg(SrcHi, KillFlag | UndefHi);
+        BuildMI(MBB, I, DL, get(Hexagon::V6_vmerge_qf), DstLo)
+            .addReg(Hexagon::V31)
+            .addReg(Hexagon::V31, RegState::Kill);
+        return;
+      }
+      BuildMI(MBB, I, DL, get(Hexagon::V6_vmerge_qf), DstLo)
+          .addReg(SrcLo, UndefLo)
+          .addReg(SrcLo, KillFlag | UndefLo);
+      BuildMI(MBB, I, DL, get(Hexagon::V6_vmerge_qf), DstHi)
+          .addReg(SrcHi, UndefHi)
+          .addReg(SrcHi, KillFlag | UndefHi);
+      return;
+    }
     BuildMI(MBB, I, DL, get(Hexagon::V6_vcombine), DestReg)
       .addReg(SrcHi, KillFlag | UndefHi)
       .addReg(SrcLo, KillFlag | UndefLo);

@@ -146,6 +146,12 @@ BitVector HexagonRegisterInfo::getReservedRegs(const MachineFunction &MF)
   Reserved.set(Hexagon::R30);
   Reserved.set(Hexagon::R31);
   Reserved.set(Hexagon::VTMP);
+  // QF spill expansion uses this physical vector for packed extended bits.
+  // Reserving it (and its super-register below) avoids recursively scavenging
+  // another live QF value while trying to preserve the first one.
+  const auto &HST = MF.getSubtarget<HexagonSubtarget>();
+  if (HST.useHVXV79Ops() && HST.useHVXQFloatOps())
+    Reserved.set(Hexagon::V31);
 
   // Guest registers.
   Reserved.set(Hexagon::GELR);        // G0

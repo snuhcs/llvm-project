@@ -1,0 +1,121 @@
+# RUN: llc -mtriple=hexagon -mcpu=hexagonv79 -mattr=+hvxv79,+hvx-length128b,+hvx-qfloat -run-pass=prologepilog -verify-machineinstrs %s -o - | FileCheck %s
+# RUN: llc -mtriple=hexagon -mcpu=hexagonv79 -mattr=+hvxv79,+hvx-length128b,-hvx-qfloat -run-pass=prologepilog -verify-machineinstrs %s -o - | FileCheck %s --check-prefix=NOQF
+
+# Compiler spills carry data plus extended bits; raw VMEM intrinsics are not
+# represented by these codegen-only spill pseudos. The live source in each
+# store must also retain its state. No new vector virtual register is needed.
+# CHECK-LABEL: name: qf_single
+# CHECK: V6_get_qfext $v0,
+# CHECK: V6_set_qfext $v31,
+# CHECK: $v0 = V6_vmerge_qf $v31, $v0
+# CHECK: V6_set_qfext $v31,
+# CHECK: $v1 = V6_vmerge_qf $v31, $v1
+
+# CHECK-LABEL: name: qf_pair
+# CHECK: V6_get_qfext $v0,
+# CHECK: V6_get_qfext $v1,
+# CHECK: $v2 = V6_vmerge_qf $v31, $v2
+# CHECK: $v3 = V6_vmerge_qf $v31, $v3
+
+# Both sideband and primary use the existing spill base with a VLA. This case
+# has a dominating PS_aligna; it does not assert a universal FP-based policy.
+# CHECK-LABEL: name: qf_vla
+# CHECK: V6_get_qfext $v0,
+# CHECK: V6_vS32b_ai [[AP:\$r[0-9]+]],
+# CHECK: V6_vS32b_ai [[AP]],
+# CHECK: V6_vL32b_ai [[AP]],
+# CHECK: V6_vL32b_ai [[AP]],
+
+# A disabled realignment can clamp even a requested VL alignment. Do not use
+# aligned VMEM just because the sideband allocation requested that alignment.
+# CHECK-LABEL: name: qf_unaligned
+# CHECK: V6_get_qfext $v0,
+# CHECK: V6_vS32Ub_ai
+# CHECK: V6_vS32Ub_ai
+# CHECK: V6_vL32Ub_ai
+# CHECK: V6_vL32Ub_ai
+
+# A colored frame index can be reused by disjoint vector and scalar ranges.
+# getCommonRC may return null; the exclusion must not dereference that null.
+# CHECK-LABEL: name: qf_mixed_slot
+# CHECK: V6_get_qfext $v0,
+# CHECK: $v1 = V6_vmerge_qf $v31, $v1
+
+# NOQF: name: qf_single
+# NOQF-NOT: V6_get_qfext
+# NOQF-NOT: V6_set_qfext
+# NOQF-NOT: V6_vmerge_qf
+
+--- |
+  target triple = "hexagon"
+  define void @qf_single() { ret void }
+  define void @qf_pair() { ret void }
+  define void @qf_vla(i32 %n) {
+    %p = alloca i8, i32 %n, align 128
+    call void @use(ptr %p)
+    ret void
+  }
+  define void @qf_unaligned() #0 { ret void }
+  define void @qf_mixed_slot() { ret void }
+  declare void @use(ptr)
+  attributes #0 = { "no-realign-stack" }
+...
+---
+name: qf_single
+tracksRegLiveness: true
+stack:
+  - { id: 0, type: spill-slot, size: 128, alignment: 128 }
+body: |
+  bb.0:
+    liveins: $v0
+    PS_vstorerv_ai %stack.0, 0, $v0
+    $v1 = PS_vloadrv_ai %stack.0, 0
+...
+---
+name: qf_pair
+tracksRegLiveness: true
+stack:
+  - { id: 0, type: spill-slot, size: 256, alignment: 128 }
+body: |
+  bb.0:
+    liveins: $w0
+    PS_vstorerw_ai %stack.0, 0, $w0
+    $w1 = PS_vloadrw_ai %stack.0, 0
+...
+---
+name: qf_vla
+tracksRegLiveness: true
+stack:
+  - { id: 0, type: variable-sized, offset: 0, alignment: 1 }
+  - { id: 1, type: spill-slot, size: 128, alignment: 128 }
+body: |
+  bb.0:
+    liveins: $v0
+    $r16 = PS_aligna 128, implicit $r30
+    PS_vstorerv_ai %stack.1, 0, $v0
+    $v1 = PS_vloadrv_ai %stack.1, 0
+...
+---
+name: qf_unaligned
+tracksRegLiveness: true
+stack:
+  - { id: 0, type: spill-slot, size: 128, alignment: 8 }
+body: |
+  bb.0:
+    liveins: $v0
+    PS_vstorerv_ai %stack.0, 0, $v0
+    $v1 = PS_vloadrv_ai %stack.0, 0
+...
+---
+name: qf_mixed_slot
+tracksRegLiveness: true
+stack:
+  - { id: 0, type: spill-slot, size: 128, alignment: 128 }
+body: |
+  bb.0:
+    liveins: $v0, $r0
+    PS_vstorerv_ai %stack.0, 0, $v0
+    $v1 = PS_vloadrv_ai %stack.0, 0
+    S2_storeri_io %stack.0, 0, $r0
+    $r1 = L2_loadri_io %stack.0, 0
+...
