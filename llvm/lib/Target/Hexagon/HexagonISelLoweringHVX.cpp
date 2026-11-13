@@ -2228,12 +2228,29 @@ HexagonTargetLowering::LowerHvxMaskedOp(SDValue Op, SelectionDAG &DAG) const {
   VectorPair ValueU = StoreAlign(Value, Base);
 
   SDValue Offset1 = DAG.getTargetConstant(HwLen, dl, MVT::i32);
+  SDValue BaseHi = Base;
+  // vmem checks the address even when its byte predicate is empty. For a
+  // contiguous prefix mask, the upper part may be empty at the end of an
+  // allocation. Address the block containing the last enabled byte instead:
+  // this is the upper block when the store crosses a vector boundary, and
+  // the lower (valid) block otherwise. vmem ignores the low address bits.
+  if (Mask.isMachineOpcode() &&
+      Mask.getMachineOpcode() == Hexagon::V6_pred_scalar2) {
+    if (auto *Len = dyn_cast<ConstantSDNode>(Mask.getOperand(0))) {
+      uint64_t Bytes = Len->getZExtValue();
+      if (Bytes > 0 && Bytes <= HwLen) {
+        BaseHi = DAG.getNode(ISD::ADD, dl, ty(Base), Base,
+                             DAG.getConstant(Bytes - 1, dl, ty(Base)));
+        Offset1 = Offset0;
+      }
+    }
+  }
   SDValue StoreLo =
       getInstr(StoreOpc, dl, MVT::Other,
                {MaskU.first, Base, Offset0, ValueU.first, Chain}, DAG);
   SDValue StoreHi =
       getInstr(StoreOpc, dl, MVT::Other,
-               {MaskU.second, Base, Offset1, ValueU.second, Chain}, DAG);
+               {MaskU.second, BaseHi, Offset1, ValueU.second, Chain}, DAG);
   DAG.setNodeMemRefs(cast<MachineSDNode>(StoreLo.getNode()), {MemOp});
   DAG.setNodeMemRefs(cast<MachineSDNode>(StoreHi.getNode()), {MemOp});
   return DAG.getNode(ISD::TokenFactor, dl, MVT::Other, {StoreLo, StoreHi});
