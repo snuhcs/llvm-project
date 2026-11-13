@@ -440,7 +440,10 @@ class OpR_RR_pat_conv_hf<InstHexagon MI, PatFrag Op, ValueType ResType,
 let Predicates = [UseHVXV68, UseHVXQFloat] in {
   def: OpR_RR_pat_conv_hf<V6_vsub_hf,        pf2<fsub>,  VecF16, HVF16>;
   def: OpR_RR_pat_conv_hf<V6_vadd_hf,        pf2<fadd>,  VecF16, HVF16>;
-  def: OpR_RR_pat_conv_hf<V6_vmpy_qf16_hf,   pf2<fmul>,  VecF16, HVF16>;
+  // A QF16 product can underflow before its conversion to half.
+  def: Pat<(VecF16 (pf2<fmul> HVF16:$Rs, HVF16:$Rt)),
+           (V6_vconv_hf_qf32
+             (VecPF32 (V6_vmpy_qf32_hf HVF16:$Rs, HVF16:$Rt)))>;
   def: OpR_RR_pat_conv<V6_vsub_sf,        pf2<fsub>,  VecF32, HVF32>;
   def: OpR_RR_pat_conv<V6_vadd_sf,        pf2<fadd>,  VecF32, HVF32>;
   def: OpR_RR_pat_conv<V6_vmpy_qf32_sf,   pf2<fmul>,  VecF32, HVF32>;

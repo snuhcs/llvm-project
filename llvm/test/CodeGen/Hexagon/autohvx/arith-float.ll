@@ -65,10 +65,10 @@ define <64 x half> @f4(<64 x half> %a0, <64 x half> %a1) #0 {
 ; CHECK-LABEL: f4:
 ; CHECK:       // %bb.0: // %b0
 ; CHECK-NEXT:    {
-; CHECK-NEXT:     v0.qf16 = vmpy(v0.hf,v1.hf)
+; CHECK-NEXT:     v1:0.qf32 = vmpy(v0.hf,v1.hf)
 ; CHECK-NEXT:    }
 ; CHECK-NEXT:    {
-; CHECK-NEXT:     v0.hf = v0.qf16
+; CHECK-NEXT:     v0.hf = v1:0.qf32
 ; CHECK-NEXT:     jumpr r31
 ; CHECK-NEXT:    }
 b0:
